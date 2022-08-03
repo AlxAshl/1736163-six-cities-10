@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import {AppRoute} from '../../const';
 import {Link} from 'react-router-dom';
 import CommentForm from '../../components/comment-form/comment-form';
+import ReviewList from '../../components/review-list/review-list';
 
 type RoomProps = {
   offers: Offer[];
@@ -15,7 +16,10 @@ function Room(props: RoomProps): JSX.Element {
 
   const {id} = useParams();
   const {offers, reviews} = props;
-  const offer = offers.find((offerObj) => offerObj.offerId === Number(id)) as Offer;
+  const offer = offers.find((offerObj) => offerObj.offerId === Number(id));
+  if (offer === undefined) {
+    throw new TypeError('Couldn\'t find offer');
+  }
   const review = reviews.filter((reviewObj) => reviewObj.offerId === Number(id));
   const {bedrooms, description, goods, maxAdults, images, isPremium, price, title, rating, type, host:{avatarUrl, name, isPro}} = offer;
 
@@ -135,34 +139,7 @@ function Room(props: RoomProps): JSX.Element {
                 </div>
                 <section className="property__reviews reviews">
                   <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{review.length}</span></h2>
-                  <ul className="reviews__list">
-                    {review.map((reviewObj, index) => {
-                      const keyValue = `${index}-${reviewObj}`;
-                      return (
-                        <li className="reviews__item" key={keyValue}>
-                          <div className="reviews__user user">
-                            <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                              <img className="reviews__avatar user__avatar" src={reviewObj.user.avatarUrl} width="54" height="54" alt="Reviews avatar"/>
-                            </div>
-                            <span className="reviews__user-name">
-                              {reviewObj.user.name}
-                            </span>
-                          </div>
-                          <div className="reviews__info">
-                            <div className="reviews__rating rating">
-                              <div className="reviews__stars rating__stars">
-                                <span style={{width: `${20 * reviewObj.rating}%`}}></span>
-                                <span className="visually-hidden">Rating</span>
-                              </div>
-                            </div>
-                            <p className="reviews__text">
-                              {reviewObj.comment}
-                            </p>
-                            <time className="reviews__time" dateTime="2019-04-24">{reviewObj.date}</time>
-                          </div>
-                        </li>
-                      );})}
-                  </ul>
+                  <ReviewList review={review}/>
                   <CommentForm
                     onComment={() => {
                       throw new Error('Function \'onComment\' isn\'t implemented.');

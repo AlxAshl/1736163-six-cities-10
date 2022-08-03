@@ -14,25 +14,23 @@ type MapProps = {
 
 const defaultCustomIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40]
+  iconSize: [30, 40],
+  iconAnchor: [15, 40]
 });
 
 // const currentCustomIcon = new Icon({
 //   iconUrl: URL_MARKER_CURRENT,
-//   iconSize: [40, 40],
-//   iconAnchor: [20, 40]
+//   iconSize: [30, 40],
+//   iconAnchor: [15, 40]
 // }); ----- Потребуется позже при добавлении функционала
 
 function Map({offers}: MapProps): JSX.Element {
 
-  const offer = offers;
-  const selectedCityOffers = offer.filter((offerObj) =>offerObj.city.name === SELECTED_CITY);
-  const selectedCity = offer.find((offerObj) =>offerObj.city.name === SELECTED_CITY) as Offer;
-  const city = selectedCity;
+  const selectedCityOffers = offers.filter((offerObj) =>offerObj.city.name === SELECTED_CITY);
+  const {location} = selectedCityOffers[0];
 
   const mapRef = useRef(null);
-  const map = useMap(mapRef, city);
+  const map = useMap(mapRef, location);
 
   useEffect(() => {
     if (map) {
