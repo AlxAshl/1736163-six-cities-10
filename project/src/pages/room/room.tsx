@@ -1,7 +1,7 @@
 import Logo from '../../components/logo/logo';
 import { Review } from '../../types/review';
 import { Offer } from '../../types/offer';
-import { useParams, Link, Navigate  } from 'react-router-dom';
+import { useParams, Link, Navigate } from 'react-router-dom';
 import {AppRoute} from '../../const';
 import CommentForm from '../../components/comment-form/comment-form';
 import ReviewList from '../../components/review-list/review-list';
