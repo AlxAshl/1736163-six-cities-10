@@ -23,7 +23,7 @@ function CommentForm(props: CommentFormProps): JSX.Element {
       name: 'Oliver.conner'
     }
   });
-  //код, которого нет
+
   const formChangeHandler = (evt: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
     const {name, value} = evt.target;
     setFormData({...formData, [name]: value});
