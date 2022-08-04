@@ -1,91 +1,155 @@
 import {Offer} from '../types/offer';
 
-const AVATAR = 'img/avatar-angelina.jpg';
-
 export const offers: Offer[] = [
   {
+    bedrooms: 3,
+    city: {
+      location: {
+        latitude: 52.370216,
+        longitude: 4.895168,
+        zoom: 10
+      },
+      name: 'Amsterdam'
+    },
+    description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam1.',
+    goods: [
+      'Heating', 'Wi-Fi'
+    ],
+    host: {
+      avatarUrl: 'img/avatar-max.jpg',
+      hostId: 3,
+      isPro: true,
+      name: 'Angelina'
+    },
     offerId: 1,
-    data: {
-      pictures: ['img/room.jpg', 'img/apartment-02.jpg', 'img/apartment-03.jpg', 'img/studio-01.jpg', 'img/apartment-01.jpg'],
-      propertyName: 'Beautiful & luxurious studio at great MSE',
-      description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of MSE. The building is green and from 18th century.',
-      premium: true,
-      type: 'house',
-      rate: 2,
-      bedsCount: 2,
-      personsCount: 3,
-      price: 78,
-      insideList: ['Cabel TV', 'Washing machine', 'Towels'],
-
-      host: {
-        pro: true,
-        avatar: AVATAR,
-        name: 'Ivan'
-      }
-    }
+    images: ['img/studio-01.jpg', 'img/room.jpg', 'img/apartment-02.jpg', 'img/apartment-03.jpg', 'img/apartment-01.jpg'],
+    isFavorite: true,
+    isPremium: true,
+    location: {
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
+      zoom: 8
+    },
+    maxAdults: 3,
+    previewImage: 'img/studio-01.jpg',
+    price: 76,
+    rating: 2.8,
+    title: 'Beautiful & luxurious studio at great location',
+    type: 'flat'
   },
+
   {
+    bedrooms: 3,
+    city: {
+      location: {
+        latitude: 52.370216,
+        longitude: 4.895168,
+        zoom: 10
+      },
+      name: 'Amsterdam'
+    },
+    description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam2.',
+    goods: [
+      'Heating',
+      'Parking'
+    ],
+    host: {
+      avatarUrl: 'img/avatar-max.jpg',
+      hostId: 3,
+      isPro: false,
+      name: 'Michael'
+    },
     offerId: 2,
-    data: {
-      pictures: ['img/apartment-03.jpg', 'img/room.jpg', 'img/apartment-02.jpg', 'img/studio-01.jpg', 'img/apartment-01.jpg'],
-      propertyName: 'Beautiful & luxurious studio at great HHS',
-      description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of HHS. The building is green and from 18th century.',
-      premium: false,
-      type: 'room',
-      rate: 4,
-      bedsCount: 3,
-      personsCount: 4,
-      price: 34,
-      insideList: ['Cabel TV', 'Wi-Fi', 'Heating', 'Coffee machine'],
-
-      host: {
-        pro: true,
-        avatar: AVATAR,
-        name: 'Piotr'
-      }
-    }
+    images: ['img/room.jpg', 'img/apartment-02.jpg', 'img/apartment-03.jpg', 'img/apartment-01.jpg', 'img/studio-01.jpg'],
+    isFavorite: true,
+    isPremium: true,
+    location: {
+      latitude: 52.369553943508,
+      longitude: 4.85309666406198,
+      zoom: 8
+    },
+    maxAdults: 2,
+    previewImage: 'img/apartment-02.jpg',
+    price: 50,
+    rating: 3.8,
+    title: 'Beautiful & luxurious studio at great location',
+    type: 'apartment'
   },
+
   {
+    bedrooms: 3,
+    city: {
+      location: {
+        latitude: 52.370216,
+        longitude: 4.895168,
+        zoom: 10
+      },
+      name: 'Amsterdam'
+    },
+    description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam3.',
+    goods: [
+      'Heating',
+      'AC'
+    ],
+    host: {
+      avatarUrl: 'img/avatar-max.jpg',
+      hostId: 3,
+      isPro: true,
+      name: 'Donald'
+    },
     offerId: 3,
-    data: {
-      pictures: ['img/studio-01.jpg', 'img/room.jpg', 'img/apartment-02.jpg', 'img/apartment-03.jpg', 'img/apartment-01.jpg'],
-      propertyName: 'Beautiful & luxurious studio at great ASF',
-      description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of ASF. The building is green and from 18th century.',
-      premium: true,
-      type: 'apartment',
-      rate: 5,
-      bedsCount: 5,
-      personsCount: 6,
-      price: 55,
-      insideList: ['Dishwasher', 'Baby seat'],
-
-      host: {
-        pro: true,
-        avatar: AVATAR,
-        name: 'Alex'
-      }
-    }
+    images: ['img/room.jpg', 'img/apartment-03.jpg', 'img/apartment-01.jpg', 'img/studio-01.jpg', 'img/apartment-02.jpg'],
+    isFavorite: false,
+    isPremium: true,
+    location: {
+      latitude: 52.3909553943508,
+      longitude: 4.929309666406198,
+      zoom: 8
+    },
+    maxAdults: 5,
+    previewImage: 'img/apartment-01.jpg',
+    price: 70,
+    rating: 4.8,
+    title: 'Beautiful & luxurious studio at great location',
+    type: 'house'
   },
-  {
-    offerId: 4,
-    data: {
-      pictures: ['img/apartment-02.jpg', 'img/room.jpg', 'img/apartment-03.jpg', 'img/studio-01.jpg', 'img/apartment-01.jpg'],
-      propertyName: 'Beautiful & luxurious studio at GASS',
-      description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of GASS. The building is green and from 18th century.',
-      premium: true,
-      type: 'hotel',
-      rate: 3,
-      bedsCount: 1,
-      personsCount: 2,
-      price: 64,
-      insideList: ['Wi-Fi', 'Kitchen', 'Dishwasher', 'Cabel TV', 'Fridge'],
 
-      host: {
-        pro: false,
-        avatar: AVATAR,
-        name: 'Jeff'
-      }
-    }
+  {
+    bedrooms: 3,
+    city: {
+      location: {
+        latitude: 52.370216,
+        longitude: 4.895168,
+        zoom: 10
+      },
+      name: 'Amsterdam'
+    },
+    description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam4.',
+    goods: [
+      'Heating',
+      'Spotless'
+    ],
+    host: {
+      avatarUrl: 'img/avatar-max.jpg',
+      hostId: 3,
+      isPro: false,
+      name: 'Mike'
+    },
+    offerId: 4,
+    images: ['img/room.jpg', 'img/apartment-03.jpg', 'img/apartment-01.jpg', 'img/apartment-02.jpg', 'img/studio-01.jpg'],
+    isFavorite: true,
+    isPremium: false,
+    location: {
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198,
+      zoom: 8
+    },
+    maxAdults: 6,
+    previewImage: 'img/apartment-02.jpg',
+    price: 100,
+    rating: 4,
+    title: 'Beautiful & luxurious studio at great location',
+    type: 'apartment4'
   }
 ];
 

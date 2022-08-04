@@ -3,6 +3,7 @@ import OffersList from '../../components/offers-list/offers-list';
 import { Offer } from '../../types/offer';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const';
+import Map from '../../components/map/map';
 
 type MainPageProps = {
   placesCount: number;
@@ -106,7 +107,7 @@ function MainPage({placesCount, offers}: MainPageProps): JSX.Element {
                 <OffersList offers={offers}/>
               </section>
               <div className="cities__right-section">
-                <section className="cities__map map"></section>
+                <Map offers={offers}/>
               </div>
             </div>
           </div>

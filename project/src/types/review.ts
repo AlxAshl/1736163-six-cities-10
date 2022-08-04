@@ -1,14 +1,15 @@
 export type ReviewType = {
-  offerId: number;
-  review: ReviewInfo[];
-}
-
-export type ReviewInfo = {
-  avatar: string;
-  name: string;
-  message: string;
-  rate: number;
-  date: string;
+  comment: string
+  date: string
+  offerId: number
+  rating: number
+  user: {
+    avatarUrl: string
+    id: number
+    isPro: boolean
+    name: string
+  }
 }
 
 export type Review = ReviewType;
+

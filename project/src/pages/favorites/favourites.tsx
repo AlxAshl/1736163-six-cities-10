@@ -60,19 +60,19 @@ function Favourites(props: FavouritesProps): JSX.Element {
                   <div className="favorites__places">
                     {offers.map((offer) => (
                       <article className="favorites__card place-card" key={offer.offerId}>
-                        {offer.data.premium ?
+                        {offer.isPremium ?
                           <div className="place-card__mark">
                             <span>Premium</span>
                           </div> : null}
                         <div className="favorites__image-wrapper place-card__image-wrapper">
                           <Link to={`/offer/${offer.offerId}`}>
-                            <img className="place-card__image" src={offer.data.pictures[0]} width="150" height="110" alt=""/>
+                            <img className="place-card__image" src={offer.previewImage} width="150" height="110" alt=""/>
                           </Link>
                         </div>
                         <div className="favorites__card-info place-card__info">
                           <div className="place-card__price-wrapper">
                             <div className="place-card__price">
-                              <b className="place-card__price-value">&euro;{offer.data.price}</b>
+                              <b className="place-card__price-value">&euro;{offer.price}</b>
                               <span className="place-card__price-text">&#47;&nbsp;night</span>
                             </div>
                             <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
@@ -84,14 +84,14 @@ function Favourites(props: FavouritesProps): JSX.Element {
                           </div>
                           <div className="place-card__rating rating">
                             <div className="place-card__stars rating__stars">
-                              <span style={{width: `${20 * offer.data.rate}%`}}></span>
+                              <span style={{width: `${20 * offer.rating}%`}}></span>
                               <span className="visually-hidden">Rating</span>
                             </div>
                           </div>
                           <h2 className="place-card__name">
-                            <Link to={`offer/${offer.offerId}`}>{offer.data.description}</Link>
+                            <Link to={`offer/${offer.offerId}`}>{offer.description}</Link>
                           </h2>
-                          <p className="place-card__type">{offer.data.type.charAt(0).toUpperCase() + offer.data.type.slice(1)}</p>
+                          <p className="place-card__type">{offer.type.charAt(0).toUpperCase() + offer.type.slice(1)}</p>
                         </div>
                       </article>))}
                   </div>

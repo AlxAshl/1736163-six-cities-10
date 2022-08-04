@@ -1,52 +1,64 @@
 import { Review } from '../types/review';
 
-
 export const reviews: Review[] = [
   {
+    comment: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam1.',
+    date: 'Mon Aug 01 2022 03:19:39 GMT+0300 (Москва, стандартное время)',
     offerId: 1,
-    review: [{
-      avatar: 'img/avatar-max.jpg',
-      name: 'Maurice',
-      message: 'A quiet and cozy place.',
-      rate: 4,
-      date: 'April 29',
-    },
-    {
-      avatar: 'img/avatar-max.jpg',
-      name: 'Julia',
-      message: 'B quiet and cozy place.',
-      rate: 3,
-      date: 'April 15',
-    }]
+    rating: 5,
+    user: {
+      avatarUrl: 'img/avatar-max.jpg',
+      id: 1,
+      isPro: true,
+      name: 'Oliver.conner'
+    }
   },
   {
+    comment: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam1-1.',
+    date: 'Mon Aug 01 2022 04:19:39 GMT+0300 (Москва, стандартное время)',
+    offerId: 1,
+    rating: 4,
+    user: {
+      avatarUrl: 'img/avatar-max.jpg',
+      id: 1,
+      isPro: true,
+      name: 'Oliver.conner'
+    }
+  },
+  {
+    comment: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam2.',
+    date: 'Mon Aug 02 2022 03:19:39 GMT+0300 (Москва, стандартное время)',
     offerId: 2,
-    review: [{
-      avatar: 'img/avatar-max.jpg',
-      name: 'Adam',
-      message: 'C quiet and cozy place.',
-      rate: 2,
-      date: 'April 12',
-    }]
+    rating: 4,
+    user: {
+      avatarUrl: 'img/avatar-max.jpg',
+      id: 2,
+      isPro: false,
+      name: 'Amanda.conner'
+    }
   },
   {
+    comment: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam3.',
+    date: 'Mon Aug 03 2022 03:19:39 GMT+0300 (Москва, стандартное время)',
     offerId: 3,
-    review: [{
-      avatar: 'img/avatar-max.jpg',
-      name: 'Sam',
-      message: 'D quiet and cozy place.',
-      rate: 5,
-      date: 'April 22',
-    }]
+    rating: 2,
+    user: {
+      avatarUrl: 'img/avatar-max.jpg',
+      id: 3,
+      isPro: true,
+      name: 'Lenny.conner'
+    }
   },
   {
+    comment: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam4.',
+    date: 'Mon Aug 04 2022 03:19:39 GMT+0300 (Москва, стандартное время)',
     offerId: 4,
-    review: [{
-      avatar: 'img/avatar-max.jpg',
-      name: 'Kim',
-      message: 'E quiet and cozy place.',
-      rate: 3,
-      date: 'April 25',
-    }]
-  }
+    rating: 3,
+    user: {
+      avatarUrl: 'img/avatar-max.jpg',
+      id: 4,
+      isPro: false,
+      name: 'Kaleb.conner'
+    }
+  },
 ];
