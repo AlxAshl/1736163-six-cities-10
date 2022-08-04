@@ -1,9 +1,8 @@
 import Logo from '../../components/logo/logo';
 import { Review } from '../../types/review';
 import { Offer } from '../../types/offer';
-import { useParams } from 'react-router-dom';
+import { useParams, Link, Navigate  } from 'react-router-dom';
 import {AppRoute} from '../../const';
-import {Link} from 'react-router-dom';
 import CommentForm from '../../components/comment-form/comment-form';
 import ReviewList from '../../components/review-list/review-list';
 
@@ -17,9 +16,12 @@ function Room(props: RoomProps): JSX.Element {
   const {id} = useParams();
   const {offers, reviews} = props;
   const offer = offers.find((offerObj) => offerObj.offerId === Number(id));
+
   if (offer === undefined) {
-    throw new TypeError('Couldn\'t find offer');
+    <Navigate to={'*'} />;
+    throw new Error('Couldn\'t find offer');
   }
+
   const review = reviews.filter((reviewObj) => reviewObj.offerId === Number(id));
   const {bedrooms, description, goods, maxAdults, images, isPremium, price, title, rating, type, host:{avatarUrl, name, isPro}} = offer;
 

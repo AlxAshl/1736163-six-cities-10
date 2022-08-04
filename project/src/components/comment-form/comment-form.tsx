@@ -11,18 +11,6 @@ function CommentForm(props: CommentFormProps): JSX.Element {
   const {id} = useParams();
   const paramsId = Number(id);
 
-  // const [formData, setFormData] = useState({
-  //   avatar: 'someAvatar',
-  //   name: 'someUser',
-  //   message: '',
-  //   rate: 0,
-  //   date: 'someDate',
-  // });
-
-  // const review: Review = {
-  //   offerId: paramsId,
-  //   review: [formData]
-  // };
   const [formData, setFormData] = useState({
     comment: '',
     date: `${new Date()}`,
@@ -35,21 +23,7 @@ function CommentForm(props: CommentFormProps): JSX.Element {
       name: 'Oliver.conner'
     }
   });
-
-  // const formData: Review = {
-  //   comment: '',
-  //   date: `${new Date()}`,
-  //   offerId: paramsId,
-  //   rating: 0,
-  //   user: {
-  //     avatarUrl: 'img/avatar-max.jpg',
-  //     id: 1,
-  //     isPro: true,
-  //     name: 'Oliver.conner'
-  //   }
-  // };
-
-  // console.log(newReview);
+  //код, которого нет
   const formChangeHandler = (evt: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
     const {name, value} = evt.target;
     setFormData({...formData, [name]: value});
@@ -58,7 +32,6 @@ function CommentForm(props: CommentFormProps): JSX.Element {
   return (
     <form onSubmit={(evt: FormEvent<HTMLFormElement>) => {
       evt.preventDefault();
-      console.log(formData);
       onComment(formData);
     }} className="reviews__form form" action="#" method="post"
     >
