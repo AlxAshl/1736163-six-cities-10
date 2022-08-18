@@ -1,18 +1,10 @@
 import {useRef, useEffect} from 'react';
 import {Icon, Marker} from 'leaflet';
 import useMap from '../../hooks/useMap';
-import {Offer} from '../../types/offer';
 import {URL_MARKER_DEFAULT} from '../../const';
 import 'leaflet/dist/leaflet.css';
 import { useAppSelector } from '../../hooks';
-import { Navigate } from 'react-router-dom';
 
-
-// const SELECTED_CITY = 'Amsterdam';
-
-type MapProps = {
-  offers: Offer[]
-}
 
 const defaultCustomIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
