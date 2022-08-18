@@ -1,15 +1,21 @@
 import Card from '../card/card';
-import {Offer} from '../../types/offer';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import {placesCounter} from '../../store/action';
+import { useEffect } from 'react';
 
-type OffersListProps = {
-  offers: Offer[];
-}
+function OffersList(): JSX.Element {
 
-function OffersList({offers}: OffersListProps): JSX.Element {
+  const {offers, currentCity} = useAppSelector((state) => state);
+  const filteredOffers = offers.filter((offerObj) => offerObj.city.name === currentCity);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    const value = filteredOffers.length;
+    dispatch(placesCounter(value));
+  });
 
   return (
     <div className="cities__places-list places__list tabs__content">
-      {offers.map((offer) => (
+      {filteredOffers.map((offer) => (
         <Card key={offer.offerId}
           offer={offer}
         />

@@ -8,14 +8,15 @@ import {AppRoute, AuthorizationStatus} from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import {Offer} from '../../types/offer';
 import {Review} from '../../types/review';
+import {City} from '../../types/cities';
 
 type AppScreenProps = {
-  placesCount: number,
   offers: Offer[],
   reviews: Review[]
+  cities: City
 }
 
-function App({placesCount, offers, reviews}: AppScreenProps): JSX.Element {
+function App({offers, reviews, cities}: AppScreenProps): JSX.Element {
 
   return (
     <BrowserRouter>
@@ -24,8 +25,7 @@ function App({placesCount, offers, reviews}: AppScreenProps): JSX.Element {
           path={AppRoute.Root}
           element={
             <MainPage
-              placesCount={placesCount}
-              offers={offers}
+              cities = {cities}
             />
           }
         />
@@ -45,7 +45,6 @@ function App({placesCount, offers, reviews}: AppScreenProps): JSX.Element {
           path={AppRoute.Room}
           element={
             <Room
-              offers={offers}
               reviews={reviews}
             />
           }

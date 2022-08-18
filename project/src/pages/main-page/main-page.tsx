@@ -1,16 +1,20 @@
 import Logo from '../../components/logo/logo';
 import OffersList from '../../components/offers-list/offers-list';
-import { Offer } from '../../types/offer';
+import { City } from '../../types/cities';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const';
 import Map from '../../components/map/map';
+import CitiesList from '../../components/cities-list/cities-list';
+import {useAppSelector} from '../../hooks';
+
 
 type MainPageProps = {
-  placesCount: number;
-  offers: Offer[];
+  cities: City;
 }
 
-function MainPage({placesCount, offers}: MainPageProps): JSX.Element {
+function MainPage({cities}: MainPageProps): JSX.Element {
+
+  const {currentCity, placesCount} = useAppSelector((state) => state);
 
   return (
     <>
@@ -50,45 +54,14 @@ function MainPage({placesCount, offers}: MainPageProps): JSX.Element {
           <h1 className="visually-hidden">Cities</h1>
           <div className="tabs">
             <section className="locations container">
-              <ul className="locations__list tabs__list">
-                <li className="locations__item">
-                  <Link to={'*'} className="locations__item-link tabs__item">
-                    <span>Paris</span>
-                  </Link>
-                </li>
-                <li className="locations__item">
-                  <Link to={'*'} className="locations__item-link tabs__item">
-                    <span>Cologne</span>
-                  </Link>
-                </li>
-                <li className="locations__item">
-                  <Link to={'*'} className="locations__item-link tabs__item">
-                    <span>Brussels</span>
-                  </Link>
-                </li>
-                <li className="locations__item">
-                  <Link to={'*'} className="locations__item-link tabs__item tabs__item--active">
-                    <span>Amsterdam</span>
-                  </Link>
-                </li>
-                <li className="locations__item">
-                  <Link to={'*'} className="locations__item-link tabs__item">
-                    <span>Hamburg</span>
-                  </Link>
-                </li>
-                <li className="locations__item">
-                  <Link to={'*'} className="locations__item-link tabs__item">
-                    <span>Dusseldorf</span>
-                  </Link>
-                </li>
-              </ul>
+              <CitiesList cities={cities}/>
             </section>
           </div>
           <div className="cities">
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{placesCount} places to stay in Amsterdam</b>
+                <b className="places__found">{placesCount} places to stay in {currentCity}</b>
                 <form className="places__sorting" action="#" method="get">
                   <span className="places__sorting-caption">Sort by</span>
                   <span className="places__sorting-type" tabIndex={0}>
@@ -97,17 +70,17 @@ function MainPage({placesCount, offers}: MainPageProps): JSX.Element {
                       <use xlinkHref="#icon-arrow-select"></use>
                     </svg>
                   </span>
-                  <ul className="places__options places__options--custom places__options--opened">
+                  <ul className="places__options places__options--custom places__options--closed">
                     <li className="places__option places__option--active" tabIndex={0}>Popular</li>
                     <li className="places__option" tabIndex={0}>Price: low to high</li>
                     <li className="places__option" tabIndex={0}>Price: high to low</li>
                     <li className="places__option" tabIndex={0}>Top rated first</li>
                   </ul>
                 </form>
-                <OffersList offers={offers}/>
+                <OffersList />
               </section>
               <div className="cities__right-section">
-                <Map offers={offers}/>
+                <Map />
               </div>
             </div>
           </div>

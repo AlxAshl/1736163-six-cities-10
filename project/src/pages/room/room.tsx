@@ -1,20 +1,20 @@
 import Logo from '../../components/logo/logo';
 import { Review } from '../../types/review';
-import { Offer } from '../../types/offer';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import {AppRoute} from '../../const';
 import CommentForm from '../../components/comment-form/comment-form';
 import ReviewList from '../../components/review-list/review-list';
+import { useAppSelector } from '../../hooks';
 
 type RoomProps = {
-  offers: Offer[];
   reviews: Review[];
 };
 
 function Room(props: RoomProps): JSX.Element {
 
   const {id} = useParams();
-  const {offers, reviews} = props;
+  const {reviews} = props;
+  const offers = useAppSelector((state) => state.offers);
   const offer = offers.find((offerObj) => offerObj.offerId === Number(id));
 
   if (offer === undefined) {
