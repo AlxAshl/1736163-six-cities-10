@@ -8,15 +8,13 @@ import {AppRoute, AuthorizationStatus} from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import {Offer} from '../../types/offer';
 import {Review} from '../../types/review';
-import {City} from '../../types/cities';
 
 type AppScreenProps = {
   offers: Offer[],
   reviews: Review[]
-  cities: City
 }
 
-function App({offers, reviews, cities}: AppScreenProps): JSX.Element {
+function App({offers, reviews}: AppScreenProps): JSX.Element {
 
   return (
     <BrowserRouter>
@@ -24,9 +22,13 @@ function App({offers, reviews, cities}: AppScreenProps): JSX.Element {
         <Route
           path={AppRoute.Root}
           element={
-            <MainPage
-              cities = {cities}
-            />
+            <MainPage />
+          }
+        />
+        <Route
+          path={AppRoute.City}
+          element={
+            <MainPage />
           }
         />
         <Route

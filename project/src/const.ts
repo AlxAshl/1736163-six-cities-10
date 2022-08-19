@@ -2,7 +2,8 @@ export enum AppRoute {
   Login = '/login',
   Favourites = '/favourites',
   Root = '/',
-  Room = 'offer/:id'
+  City = '/:city',
+  Room = ':city/offer/:id'
 }
 
 export enum AuthorizationStatus {
@@ -11,5 +12,17 @@ export enum AuthorizationStatus {
   Unknown='UNKNOWN'
 }
 
+export enum Cities {
+  Paris = 'Paris',
+  Cologne = 'Cologne',
+  Brussels = 'Brussels',
+  Amsterdam = 'Amsterdam',
+  Hamburg = 'Hamburg',
+  Dusseldorf = 'Dusseldorf',
+}
+
+export type CitiesEnum = typeof Cities[keyof typeof Cities];
+
 export const URL_MARKER_DEFAULT = 'img/pin.svg';
 export const URL_MARKER_CURRENT = 'img/pin-active.svg';
+

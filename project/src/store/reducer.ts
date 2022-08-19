@@ -14,7 +14,7 @@ const reducer = createReducer(initialState, (builder) => {
       state.currentCity = action.payload;
     })
     .addCase(placesCounter, (state, action) => {
-      state.placesCount = action.payload;
+      state.placesCount = action.payload.length;
     });
 });
 

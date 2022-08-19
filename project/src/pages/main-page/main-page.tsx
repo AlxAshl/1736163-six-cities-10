@@ -1,20 +1,15 @@
 import Logo from '../../components/logo/logo';
 import OffersList from '../../components/offers-list/offers-list';
-import { City } from '../../types/cities';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const';
 import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
 import {useAppSelector} from '../../hooks';
 
+function MainPage(): JSX.Element {
 
-type MainPageProps = {
-  cities: City;
-}
-
-function MainPage({cities}: MainPageProps): JSX.Element {
-
-  const {currentCity, placesCount} = useAppSelector((state) => state);
+  const {currentCity, offers} = useAppSelector((state) => state);
+  const placesCount = offers.filter((offerObj) => offerObj.city.name === currentCity);
 
   return (
     <>
@@ -54,14 +49,16 @@ function MainPage({cities}: MainPageProps): JSX.Element {
           <h1 className="visually-hidden">Cities</h1>
           <div className="tabs">
             <section className="locations container">
-              <CitiesList cities={cities}/>
+              <ul className="locations__list tabs__list" >
+                <CitiesList />
+              </ul>
             </section>
           </div>
           <div className="cities">
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{placesCount} places to stay in {currentCity}</b>
+                <b className="places__found">{placesCount.length} places to stay in {currentCity}</b>
                 <form className="places__sorting" action="#" method="get">
                   <span className="places__sorting-caption">Sort by</span>
                   <span className="places__sorting-type" tabIndex={0}>
