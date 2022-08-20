@@ -1,6 +1,7 @@
 import {createReducer} from '@reduxjs/toolkit';
 import { offers } from '../mocks/offers';
-import { citySelector, placesCounter } from './action';
+import { citySelector } from './action';
+
 
 const initialState = {
   currentCity: 'Paris',
