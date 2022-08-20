@@ -1,15 +1,24 @@
 import Logo from '../../components/logo/logo';
 import OffersList from '../../components/offers-list/offers-list';
-import {Link} from 'react-router-dom';
+import {Link, useParams, useNavigate } from 'react-router-dom';
 import {AppRoute} from '../../const';
 import Map from '../../components/map/map';
-import CitiesList from '../../components/cities-list/cities-list';
+import CityList from '../../components/cities-list/cities-list';
 import {useAppSelector} from '../../hooks';
+import { useEffect } from 'react';
 
 function MainPage(): JSX.Element {
 
   const {currentCity, offers} = useAppSelector((state) => state);
   const placesCount = offers.filter((offerObj) => offerObj.city.name === currentCity);
+  const {city} = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (city === undefined) {
+      navigate(`/${currentCity}`);
+    }
+  });
 
   return (
     <>
@@ -50,7 +59,7 @@ function MainPage(): JSX.Element {
           <div className="tabs">
             <section className="locations container">
               <ul className="locations__list tabs__list" >
-                <CitiesList />
+                <CityList />
               </ul>
             </section>
           </div>

@@ -1,11 +1,12 @@
 import Card from '../card/card';
 import {useAppSelector} from '../../hooks';
-
+import {useParams} from 'react-router-dom'
 
 function OffersList(): JSX.Element {
 
-  const {offers, currentCity} = useAppSelector((state) => state);
-  const filteredOffers = offers.filter((offerObj) => offerObj.city.name === currentCity);
+  const {city} = useParams();
+  const {offers} = useAppSelector((state) => state);
+  const filteredOffers = offers.filter((offerObj) => offerObj.city.name === city);
 
   return (
     <div className="cities__places-list places__list tabs__content">

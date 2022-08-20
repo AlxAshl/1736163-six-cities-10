@@ -1,27 +1,19 @@
 
-import {Link} from 'react-router-dom';
-import {MouseEvent} from 'react';
-import {citySelector} from '../../store/action';
-import {useAppDispatch, useAppSelector} from '../../hooks';
-import {Cities} from '../../const';
+import {Link, useParams} from 'react-router-dom';
+import {CityList} from '../../const';
 
 
 function CitiesList(): JSX.Element {
 
-  const currentCity = useAppSelector((state) => state.currentCity);
-  const dispatch = useAppDispatch();
+  const {city} = useParams();
 
   return (
     <>
-      {Object.values(Cities).map((offeredCity, index) => {
+      {Object.values(CityList).map((offeredCity, index) => {
         const keyValue = `${index}-${offeredCity}`;
         return (
           <li className="locations__item" key={keyValue}>
-            <Link to={`/${offeredCity}`} className={offeredCity === currentCity ? 'locations__item-link tabs__item tabs__item--active' : 'locations__item-link tabs__item'} onClick={({ target }: MouseEvent<HTMLAnchorElement>) => {
-              const value = offeredCity;
-              dispatch(citySelector(value));
-            }}
-            >
+            <Link to={`/${offeredCity}`} className={offeredCity === city ? 'locations__item-link tabs__item tabs__item--active' : 'locations__item-link tabs__item'}>
               <span>{offeredCity}</span>
             </Link>
           </li>

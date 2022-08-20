@@ -12,7 +12,7 @@ export enum AuthorizationStatus {
   Unknown='UNKNOWN'
 }
 
-export enum Cities {
+export enum CityList {
   Paris = 'Paris',
   Cologne = 'Cologne',
   Brussels = 'Brussels',
@@ -21,7 +21,7 @@ export enum Cities {
   Dusseldorf = 'Dusseldorf',
 }
 
-export type CitiesEnum = typeof Cities[keyof typeof Cities];
+export type CitiesEnum = typeof CityList[keyof typeof CityList];
 
 export const URL_MARKER_DEFAULT = 'img/pin.svg';
 export const URL_MARKER_CURRENT = 'img/pin-active.svg';
