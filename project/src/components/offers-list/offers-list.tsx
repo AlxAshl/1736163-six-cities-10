@@ -1,6 +1,7 @@
 import Card from '../card/card';
 import {useAppSelector} from '../../hooks';
-import {useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom';
+
 
 function OffersList(): JSX.Element {
 
