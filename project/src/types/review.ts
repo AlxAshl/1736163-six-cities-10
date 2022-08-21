@@ -1,7 +1,7 @@
 export type ReviewType = {
   comment: string
   date: string
-  offerId: number
+  id: number
   rating: number
   user: {
     avatarUrl: string

@@ -1,28 +1,26 @@
 import Logo from '../../components/logo/logo';
-import { Review } from '../../types/review';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import {AppRoute} from '../../const';
 import CommentForm from '../../components/comment-form/comment-form';
-import ReviewList from '../../components/review-list/review-list';
 import { useAppSelector } from '../../hooks';
+// import { store } from '../../store';
+// import { fetchCommentAction } from '../../store/api-actions';
+// import { Review } from '../../types/review';
+// import ReviewList from '../../components/review-list/review-list';
 
-type RoomProps = {
-  reviews: Review[];
-};
 
-function Room(props: RoomProps): JSX.Element {
+function Room(): JSX.Element {
 
+  // store.dispatch(fetchCommentAction());
   const {id} = useParams();
-  const {reviews} = props;
-  const offers = useAppSelector((state) => state.offers);
-  const offer = offers.find((offerObj) => offerObj.offerId === Number(id));
+  const offers = useAppSelector((state) => state.serverOffers);
+  const offer = offers.find((offerObj) => offerObj.id === Number(id));
 
   if (offer === undefined) {
     <Navigate to={'*'} />;
     throw new Error('Couldn\'t find offer');
   }
 
-  const review = reviews.filter((reviewObj) => reviewObj.offerId === Number(id));
   const {bedrooms, description, goods, maxAdults, images, isPremium, price, title, rating, type, host:{avatarUrl, name, isPro}} = offer;
 
   return (
@@ -140,8 +138,8 @@ function Room(props: RoomProps): JSX.Element {
                   </div>
                 </div>
                 <section className="property__reviews reviews">
-                  <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{review.length}</span></h2>
-                  <ReviewList review={review}/>
+                  <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{/*review.length*/}</span></h2>
+                  {/* <ReviewList review={review}/> */}
                   <CommentForm
                     onComment={() => {
                       throw new Error('Function \'onComment\' isn\'t implemented.');

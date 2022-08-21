@@ -1,15 +1,11 @@
 import Logo from '../../components/logo/logo';
-import { Offer } from '../../types/offer';
 import {AppRoute} from '../../const';
 import {Link} from 'react-router-dom';
+import { useAppSelector } from '../../hooks';
 
-type FavouritesProps = {
-  offers: Offer[];
-};
 
-function Favourites(props: FavouritesProps): JSX.Element {
-
-  const {offers} = props;
+function Favourites(): JSX.Element {
+  const offers = useAppSelector((state) => state.serverOffers);
   return (
     <>
       <div style={{display: 'none'}}>
@@ -59,13 +55,13 @@ function Favourites(props: FavouritesProps): JSX.Element {
                   </div>
                   <div className="favorites__places">
                     {offers.map((offer) => (
-                      <article className="favorites__card place-card" key={offer.offerId}>
+                      <article className="favorites__card place-card" key={offer.id}>
                         {offer.isPremium ?
                           <div className="place-card__mark">
                             <span>Premium</span>
                           </div> : null}
                         <div className="favorites__image-wrapper place-card__image-wrapper">
-                          <Link to={`/offer/${offer.offerId}`}>
+                          <Link to={`/offer/${offer.id}`}>
                             <img className="place-card__image" src={offer.previewImage} width="150" height="110" alt=""/>
                           </Link>
                         </div>
@@ -89,7 +85,7 @@ function Favourites(props: FavouritesProps): JSX.Element {
                             </div>
                           </div>
                           <h2 className="place-card__name">
-                            <Link to={`offer/${offer.offerId}`}>{offer.description}</Link>
+                            <Link to={`offer/${offer.id}`}>{offer.description}</Link>
                           </h2>
                           <p className="place-card__type">{offer.type.charAt(0).toUpperCase() + offer.type.slice(1)}</p>
                         </div>
