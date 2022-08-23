@@ -1,26 +1,29 @@
 import Logo from '../../components/logo/logo';
-import { useParams, Link, Navigate } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import {AppRoute} from '../../const';
 import CommentForm from '../../components/comment-form/comment-form';
 import { useAppSelector } from '../../hooks';
-// import { store } from '../../store';
-// import { fetchCommentAction } from '../../store/api-actions';
-// import { Review } from '../../types/review';
-// import ReviewList from '../../components/review-list/review-list';
+import { store } from '../../store';
+import { fetchCommentAction } from '../../store/api-actions';
+import { hotelId } from '../../store/action';
+import ReviewList from '../../components/review-list/review-list';
 
 
 function Room(): JSX.Element {
 
-  // store.dispatch(fetchCommentAction());
-  const {id} = useParams();
-  const offers = useAppSelector((state) => state.serverOffers);
-  const offer = offers.find((offerObj) => offerObj.id === Number(id));
-
+  const navigate = useNavigate();
+  const {id, city} = useParams();
+  if (id !== useAppSelector((state) => state.id)){
+    const value = id;
+    store.dispatch(hotelId(value));
+    store.dispatch(fetchCommentAction());
+  }
+  const {serverOffers, comments} = useAppSelector((state) => state);
+  const offer = serverOffers.find((offerObj) => offerObj.id === Number(id));
   if (offer === undefined) {
-    <Navigate to={'*'} />;
+    navigate('*');
     throw new Error('Couldn\'t find offer');
   }
-
   const {bedrooms, description, goods, maxAdults, images, isPremium, price, title, rating, type, host:{avatarUrl, name, isPro}} = offer;
 
   return (
@@ -46,7 +49,7 @@ function Room(): JSX.Element {
                     </Link>
                   </li>
                   <li className="header__nav-item">
-                    <Link to={AppRoute.Root} className="header__nav-link">
+                    <Link to={`/${city}`} className="header__nav-link">
                       <span className="header__signout">Sign out</span>
                     </Link>
                   </li>
@@ -138,8 +141,8 @@ function Room(): JSX.Element {
                   </div>
                 </div>
                 <section className="property__reviews reviews">
-                  <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{/*review.length*/}</span></h2>
-                  {/* <ReviewList review={review}/> */}
+                  <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.length}</span></h2>
+                  {<ReviewList comments={comments}/>}
                   <CommentForm
                     onComment={() => {
                       throw new Error('Function \'onComment\' isn\'t implemented.');

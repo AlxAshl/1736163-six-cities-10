@@ -1,5 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit';
-import { citySelector, loadOffers, setError, setDataLoadedStatus, loadComments } from './action';
+import { citySelector, loadOffers, setError, setDataLoadedStatus, loadComments, hotelId } from './action';
 import { Offer } from '../types/offer';
 import { Review } from '../types/review';
 
@@ -10,7 +10,7 @@ type InitialState = {
   isDataLoaded: boolean,
   serverOffers: Offer[],
   comments: Review[],
-  id: number
+  id: string
 }
 
 const initialState: InitialState = {
@@ -19,7 +19,7 @@ const initialState: InitialState = {
   isDataLoaded: false,
   serverOffers: [],
   comments: [],
-  id: 1,
+  id: '',
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -38,6 +38,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setDataLoadedStatus, (state, action) => {
       state.isDataLoaded = action.payload;
+    })
+    .addCase(hotelId, (state, action) => {
+      state.id = action.payload;
     });
 });
 

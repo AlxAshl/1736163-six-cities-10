@@ -6,25 +6,23 @@ import Login from '../../pages/login/login';
 import Room from '../../pages/room/room';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import PrivateRoute from '../private-route/private-route';
+import Spinner from '../loading-screen/spinner';
+import { useAppSelector } from '../../hooks';
 
 
 function App(): JSX.Element {
 
+  const {isDataLoaded} = useAppSelector((state) => state);
+  if (!isDataLoaded) {
+    return (
+      <Spinner />
+    );
+  }
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path={AppRoute.Root}
-          element={
-            <MainPage />
-          }
-        />
-        <Route
-          path={AppRoute.City}
-          element={
-            <MainPage />
-          }
-        />
+        {([AppRoute.Root, AppRoute.City]).map((path) => <Route key={path.length} path={path} element={<MainPage />} />)}
         <Route
           path={AppRoute.Login}
           element={<Login/>}

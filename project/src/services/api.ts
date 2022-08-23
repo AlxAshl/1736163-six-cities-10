@@ -1,6 +1,9 @@
 import {processErrorHandle} from './process-error-handle';
 import {StatusCodes} from 'http-status-codes';
-import axios, {AxiosInstance, AxiosResponse, AxiosError} from 'axios';
+import axios, {AxiosInstance, AxiosResponse, AxiosError, AxiosRequestConfig} from 'axios';
+import { APIRoute } from '../const';
+import { store } from '../store';
+
 
 const StatusCodeMapping: Record<number, boolean> = {
   [StatusCodes.BAD_REQUEST]: true,
@@ -27,6 +30,16 @@ export const createAPI = (): AxiosInstance => {
       }
 
       throw error;
+    }
+  );
+
+  api.interceptors.request.use(
+    (config: AxiosRequestConfig): AxiosRequestConfig => {
+      if(config.url === `${APIRoute.Comments}/`){
+        const state = store.getState();
+        config.url = `${APIRoute.Comments}/${state.id}`;
+      }
+      return config;
     }
   );
 

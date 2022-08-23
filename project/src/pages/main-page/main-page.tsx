@@ -7,7 +7,11 @@ import CitiesList from '../../components/cities-list/cities-list';
 import {useAppSelector} from '../../hooks';
 import { useEffect } from 'react';
 import Spinner from '../../components/loading-screen/spinner';
+import { store } from '../../store';
+import {fetchOfferAction} from '../../store/api-actions';
 
+
+store.dispatch(fetchOfferAction());
 
 function MainPage(): JSX.Element {
 
@@ -46,7 +50,7 @@ function MainPage(): JSX.Element {
                     </Link>
                   </li>
                   <li className="header__nav-item">
-                    <Link to={AppRoute.Root} className="header__nav-link">
+                    <Link to={`/${city}`} className="header__nav-link">
                       <span className="header__signout">Sign out</span>
                     </Link>
                   </li>
@@ -86,10 +90,10 @@ function MainPage(): JSX.Element {
                       <li className="places__option" tabIndex={0}>Top rated first</li>
                     </ul>
                   </form>
-                  <OffersList />
+                  {serverOffers ? <OffersList /> : null}
                 </section>
                 <div className="cities__right-section">
-                  <Map />
+                  {serverOffers && city ? <Map /> : <Spinner />}
                 </div>
               </div>
             </div>}

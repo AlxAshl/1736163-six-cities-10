@@ -4,10 +4,10 @@ import App from './components/app/app';
 import {Provider} from 'react-redux';
 import {store} from './store';
 import ErrorMessage from './components/error-message/error-message';
-import {fetchOfferAction} from './store/api-actions';
+// import {fetchOfferAction} from './store/api-actions';
 
 
-store.dispatch(fetchOfferAction());
+// store.dispatch(fetchOfferAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,

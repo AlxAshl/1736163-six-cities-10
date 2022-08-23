@@ -1,14 +1,14 @@
 import {Review} from '../../types/review';
 
 type ReviewListProps = {
-  review: Review[];
+  comments: Review[];
 }
 
-function ReviewList({review}: ReviewListProps): JSX.Element {
+function ReviewList({comments}: ReviewListProps): JSX.Element {
 
   return (
     <ul className="reviews__list">
-      {review.map((reviewObj, index) => {
+      {comments.map((reviewObj, index) => {
         const keyValue = `${index}-${reviewObj}`;
         return (
           <li className="reviews__item" key={keyValue}>
