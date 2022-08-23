@@ -14,7 +14,7 @@ function CommentForm(props: CommentFormProps): JSX.Element {
   const [formData, setFormData] = useState({
     comment: '',
     date: `${new Date()}`,
-    offerId: paramsId,
+    id: paramsId,
     rating: 0,
     user: {
       avatarUrl: 'img/avatar-max.jpg',

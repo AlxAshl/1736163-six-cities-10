@@ -8,7 +8,7 @@ type CardProps = {
 
 function Card({offer}: CardProps): JSX.Element {
 
-  const {isPremium, price, description, rating, type, previewImage, offerId, city} = offer;
+  const {isPremium, price, description, rating, type, previewImage, id, city} = offer;
   const [isActive, setIsActive] = useState(false);
 
   return (
@@ -18,7 +18,7 @@ function Card({offer}: CardProps): JSX.Element {
           <span>Premium</span>
         </div>}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`/${city.name}/offer/${offerId}`}>
+        <Link to={`/${city.name}/offer/${id}`}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
         </Link>
       </div>
@@ -47,7 +47,7 @@ function Card({offer}: CardProps): JSX.Element {
         </div>
         {description ?
           <h2 className="place-card__name">
-            <Link to={`offer/${offerId}`}>{description}</Link>
+            <Link to={`offer/${id}`}>{description}</Link>
           </h2> : null }
         <p className="place-card__type">{type.charAt(0).toUpperCase() + type.slice(1)}</p>
       </div>

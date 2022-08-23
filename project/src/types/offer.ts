@@ -1,8 +1,3 @@
-// export type OfferType = {
-//   offerId: number;
-//   data: OfferDescription;
-// }
-
 export type OfferType = {
   bedrooms: number
   city: {
@@ -21,7 +16,7 @@ export type OfferType = {
     isPro: boolean
     name: string
   }
-  offerId: number
+  id: number
   images: string[]
   isFavorite: boolean
   isPremium: boolean
@@ -37,11 +32,5 @@ export type OfferType = {
   title: string
   type: string
 }
-
-// export type HostInfo = {
-//   pro: boolean;
-//   avatar: string;
-//   name: string;
-// }
 
 export type Offer = OfferType;

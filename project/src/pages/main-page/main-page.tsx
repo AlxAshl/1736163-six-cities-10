@@ -3,15 +3,17 @@ import OffersList from '../../components/offers-list/offers-list';
 import {Link, useParams, useNavigate } from 'react-router-dom';
 import {AppRoute} from '../../const';
 import Map from '../../components/map/map';
-import CityList from '../../components/cities-list/cities-list';
+import CitiesList from '../../components/cities-list/cities-list';
 import {useAppSelector} from '../../hooks';
 import { useEffect } from 'react';
+import Spinner from '../../components/loading-screen/spinner';
+
 
 function MainPage(): JSX.Element {
 
-  const {currentCity, offers} = useAppSelector((state) => state);
-  const placesCount = offers.filter((offerObj) => offerObj.city.name === currentCity);
+  const {serverOffers, currentCity, isDataLoaded} = useAppSelector((state) => state);
   const {city} = useParams();
+  const placesCount = serverOffers.filter((offerObj) => offerObj.city.name === city);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,37 +61,39 @@ function MainPage(): JSX.Element {
           <div className="tabs">
             <section className="locations container">
               <ul className="locations__list tabs__list" >
-                <CityList />
+                <CitiesList />
               </ul>
             </section>
           </div>
-          <div className="cities">
-            <div className="cities__places-container container">
-              <section className="cities__places places">
-                <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{placesCount.length} places to stay in {currentCity}</b>
-                <form className="places__sorting" action="#" method="get">
-                  <span className="places__sorting-caption">Sort by</span>
-                  <span className="places__sorting-type" tabIndex={0}>
+          {!isDataLoaded ? <Spinner /> :
+            <div className="cities">
+              <div className="cities__places-container container">
+                <section className="cities__places places">
+                  <h2 className="visually-hidden">Places</h2>
+                  <b className="places__found">{placesCount.length} places to stay in {city}</b>
+                  <form className="places__sorting" action="#" method="get">
+                    <span className="places__sorting-caption">Sort by</span>
+                    <span className="places__sorting-type" tabIndex={0}>
                     Popular
-                    <svg className="places__sorting-arrow" width="7" height="4">
-                      <use xlinkHref="#icon-arrow-select"></use>
-                    </svg>
-                  </span>
-                  <ul className="places__options places__options--custom places__options--closed">
-                    <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                    <li className="places__option" tabIndex={0}>Price: low to high</li>
-                    <li className="places__option" tabIndex={0}>Price: high to low</li>
-                    <li className="places__option" tabIndex={0}>Top rated first</li>
-                  </ul>
-                </form>
-                <OffersList />
-              </section>
-              <div className="cities__right-section">
-                <Map />
+                      <svg className="places__sorting-arrow" width="7" height="4">
+                        <use xlinkHref="#icon-arrow-select"></use>
+                      </svg>
+                    </span>
+                    <ul className="places__options places__options--custom places__options--closed">
+                      <li className="places__option places__option--active" tabIndex={0}>Popular</li>
+                      <li className="places__option" tabIndex={0}>Price: low to high</li>
+                      <li className="places__option" tabIndex={0}>Price: high to low</li>
+                      <li className="places__option" tabIndex={0}>Top rated first</li>
+                    </ul>
+                  </form>
+                  <OffersList />
+                </section>
+                <div className="cities__right-section">
+                  <Map />
+                </div>
               </div>
-            </div>
-          </div>
+            </div>}
+
         </main>
       </div>
     </>

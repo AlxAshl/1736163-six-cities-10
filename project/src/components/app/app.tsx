@@ -6,15 +6,10 @@ import Login from '../../pages/login/login';
 import Room from '../../pages/room/room';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import PrivateRoute from '../private-route/private-route';
-import {Offer} from '../../types/offer';
-import {Review} from '../../types/review';
 
-type AppScreenProps = {
-  offers: Offer[],
-  reviews: Review[]
-}
 
-function App({offers, reviews}: AppScreenProps): JSX.Element {
+function App(): JSX.Element {
+
   return (
     <BrowserRouter>
       <Routes>
@@ -38,16 +33,14 @@ function App({offers, reviews}: AppScreenProps): JSX.Element {
           path={AppRoute.Favourites}
           element={
             <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-              <Favourites offers={offers}/>
+              <Favourites />
             </PrivateRoute>
           }
         />
         <Route
           path={AppRoute.Room}
           element={
-            <Room
-              reviews={reviews}
-            />
+            <Room />
           }
         />
         <Route
