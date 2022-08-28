@@ -1,26 +1,23 @@
 import MainPage from '../../pages/main-page/main-page';
-import {Route, BrowserRouter, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import PageNotFound from '../../pages/page-not-found/page-not-found';
-import Favourites from '../../pages/favorites/favourites';
+import Favorites from '../../pages/favorites/favorites';
 import Login from '../../pages/login/login';
 import Room from '../../pages/room/room';
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute} from '../../const';
 import PrivateRoute from '../private-route/private-route';
-import Spinner from '../loading-screen/spinner';
 import { useAppSelector } from '../../hooks';
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../browser-history';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
 
 
 function App(): JSX.Element {
 
-  const {isDataLoaded} = useAppSelector((state) => state);
-  if (!isDataLoaded) {
-    return (
-      <Spinner />
-    );
-  }
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         {([AppRoute.Root, AppRoute.City]).map((path) => <Route key={path.length} path={path} element={<MainPage />} />)}
         <Route
@@ -30,8 +27,8 @@ function App(): JSX.Element {
         <Route
           path={AppRoute.Favourites}
           element={
-            <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-              <Favourites />
+            <PrivateRoute authorizationStatus={authorizationStatus}>
+              <Favorites />
             </PrivateRoute>
           }
         />
@@ -42,11 +39,11 @@ function App(): JSX.Element {
           }
         />
         <Route
-          path="*"
+          path={AppRoute.Notfound}
           element={<PageNotFound/>}
         />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 

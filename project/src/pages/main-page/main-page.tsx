@@ -1,28 +1,46 @@
 import Logo from '../../components/logo/logo';
+import SortingList from '../../components/sorting-list/sorting-list';
 import OffersList from '../../components/offers-list/offers-list';
-import {Link, useParams, useNavigate } from 'react-router-dom';
-import {AppRoute} from '../../const';
+import { useParams } from 'react-router-dom';
+import {AppRoute, CityList} from '../../const';
 import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
-import {useAppSelector} from '../../hooks';
-import { useEffect } from 'react';
-import Spinner from '../../components/loading-screen/spinner';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import { useEffect, useState } from 'react';
+import Preloader from '../../components/preloader/preloader';
+import NavBar from '../../components/nav-bar/nav-bar';
 import { store } from '../../store';
 import {fetchOfferAction} from '../../store/api-actions';
+import { Offer } from '../../types/offer';
+import { redirectToRoute } from '../../store/action';
+import MainEmpty from '../../components/main-empty/main-empty';
+import { getLoadedDataStatus, getOffers } from '../../store/data-process/selectors';
 
 
 store.dispatch(fetchOfferAction());
 
 function MainPage(): JSX.Element {
 
-  const {serverOffers, currentCity, isDataLoaded} = useAppSelector((state) => state);
   const {city} = useParams();
+  const isDataLoaded = useAppSelector(getLoadedDataStatus);
+  const serverOffers = useAppSelector(getOffers);
   const placesCount = serverOffers.filter((offerObj) => offerObj.city.name === city);
-  const navigate = useNavigate();
+  const dispach = useAppDispatch();
+  const [selectedCard, setSelectedCard] = useState<Offer | undefined>(undefined);
+
+  const onCardItemHover = (cardItemId: number) => {
+    const currentPoint = serverOffers.find((point) => point.id === cardItemId);
+    setSelectedCard(currentPoint);
+  };
 
   useEffect(() => {
-    if (city === undefined) {
-      navigate(`/${currentCity}`);
+    if (city === undefined && city !== AppRoute.Notfound) {
+      dispach(redirectToRoute(AppRoute.DefaultCity));
+    }
+    if (city && city !== ''){
+      if(!Object.keys(CityList).includes(city)){
+        dispach(redirectToRoute(AppRoute.Notfound));
+      }
     }
   });
 
@@ -39,23 +57,7 @@ function MainPage(): JSX.Element {
               <div className="header__left">
                 <Logo />
               </div>
-              <nav className="header__nav">
-                <ul className="header__nav-list">
-                  <li className="header__nav-item user">
-                    <Link to={AppRoute.Favourites} className="header__nav-link header__nav-link--profile">
-                      <div className="header__avatar-wrapper user__avatar-wrapper">
-                      </div>
-                      <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                      <span className="header__favorite-count">3</span>
-                    </Link>
-                  </li>
-                  <li className="header__nav-item">
-                    <Link to={`/${city}`} className="header__nav-link">
-                      <span className="header__signout">Sign out</span>
-                    </Link>
-                  </li>
-                </ul>
-              </nav>
+              <NavBar city = {city}/>
             </div>
           </div>
         </header>
@@ -69,39 +71,28 @@ function MainPage(): JSX.Element {
               </ul>
             </section>
           </div>
-          {!isDataLoaded ? <Spinner /> :
+          {isDataLoaded ? <Preloader /> :
             <div className="cities">
               <div className="cities__places-container container">
                 <section className="cities__places places">
                   <h2 className="visually-hidden">Places</h2>
                   <b className="places__found">{placesCount.length} places to stay in {city}</b>
-                  <form className="places__sorting" action="#" method="get">
-                    <span className="places__sorting-caption">Sort by</span>
-                    <span className="places__sorting-type" tabIndex={0}>
-                    Popular
-                      <svg className="places__sorting-arrow" width="7" height="4">
-                        <use xlinkHref="#icon-arrow-select"></use>
-                      </svg>
-                    </span>
-                    <ul className="places__options places__options--custom places__options--closed">
-                      <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                      <li className="places__option" tabIndex={0}>Price: low to high</li>
-                      <li className="places__option" tabIndex={0}>Price: high to low</li>
-                      <li className="places__option" tabIndex={0}>Top rated first</li>
-                    </ul>
-                  </form>
-                  {serverOffers ? <OffersList /> : null}
+                  <SortingList />
+                  {serverOffers
+                    ? <OffersList onCardItemHover={onCardItemHover} serverOffers={serverOffers} />
+                    : null}
                 </section>
                 <div className="cities__right-section">
-                  {serverOffers && city ? <Map /> : <Spinner />}
+                  {serverOffers && city && city !== '' && Object.keys(CityList).includes(city)
+                    ? <Map serverOffers={serverOffers} selectedCard={selectedCard}/>
+                    : <Preloader />}
                 </div>
               </div>
             </div>}
-
+          <MainEmpty />
         </main>
       </div>
     </>
   );
 }
 export default MainPage;
-

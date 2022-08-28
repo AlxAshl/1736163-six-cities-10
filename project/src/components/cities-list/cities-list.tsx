@@ -1,4 +1,5 @@
 
+import { memo } from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {CityList} from '../../const';
 
@@ -23,5 +24,5 @@ function CitiesList(): JSX.Element {
   );
 }
 
-export default CitiesList;
+export default memo(CitiesList);
 
