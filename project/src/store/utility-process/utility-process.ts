@@ -8,6 +8,7 @@ const initialState: UtilityProcess = {
   hotelId: '',
 };
 
+
 export const utilityProcess = createSlice({
   name: NameSpace.Utility,
   initialState,
@@ -16,7 +17,6 @@ export const utilityProcess = createSlice({
       state.currentCity = action.payload;
     },
     hotelId: (state, action) => {
-      console.log('action PAYLOAD', action.payload);
       state.hotelId = action.payload;
     },
     sortSelector: (state, action) => {
