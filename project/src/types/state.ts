@@ -8,11 +8,14 @@ export type UserProcess = {
 };
 
 export type DataProcess = {
+  isSetFavouritesSet: boolean,
   isDataLoaded: boolean,
   isHotelLoaded: boolean,
   isNearbyLoaded: boolean,
   isFavoritesLoaded: boolean,
+  isPostLoaded: boolean,
   serverOffers: Offer[],
+  unsortedOffers: Offer[],
   comments: Review[],
   nearby: Offer[],
   hotel: Offer,

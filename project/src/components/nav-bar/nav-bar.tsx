@@ -1,5 +1,3 @@
-
-
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
@@ -7,13 +5,15 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getUser } from '../../services/user-data';
 import { logoutAction } from '../../store/api-actions';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { Offer } from '../../types/offer';
 
 
 type NavBarTypes = {
   city: string | undefined
+  favorites: Offer[];
 }
 
-function NavBar(city: NavBarTypes): JSX.Element {
+function NavBar({city, favorites}: NavBarTypes): JSX.Element {
 
   const dispatch = useAppDispatch();
   const onLogout = () => {
@@ -32,7 +32,7 @@ function NavBar(city: NavBarTypes): JSX.Element {
               <div className="header__avatar-wrapper user__avatar-wrapper">
               </div>
               <span className="header__user-name user__name">{userName}</span>
-              <span className="header__favorite-count">3</span>{/* ссылка на количество предложений в favorite */}
+              <span className="header__favorite-count">{favorites.length}</span>
             </Link>
           </li>
           : null}

@@ -1,64 +1,44 @@
 import {Offer} from '../../types/offer';
-import {useState, MouseEvent} from 'react';
+import {useState, MouseEvent, memo} from 'react';
 import {Link} from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
-import { AppRoute, AuthorizationStatus } from '../../const';
-import { redirectToRoute } from '../../store/action';
-import { setFavoriteAction, fetchFavoriteAction } from '../../store/api-actions';
+import { AuthorizationStatus } from '../../const';
 
+import { setFavoriteAction } from '../../store/api-actions';
 
 type CardProps = {
   offer: Offer;
-  onCardItemHover: (cardItemId: number) => void
-  isMainPage: boolean
+  remove: (cardId: number) => void;
 }
-
-function Card({offer, onCardItemHover, isMainPage}: CardProps): JSX.Element {
+function FavoriteCard({offer, remove}: CardProps): JSX.Element {
 
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
   const {isPremium, price, title, rating, type, previewImage, id, city, isFavorite} = offer;
   const [isActive, setIsActive] = useState<boolean>(isFavorite);
-  const [delayHandler, setDelayHandler] = useState<NodeJS.Timer>();
-
-  const cardItemHoverHandler = (event: MouseEvent<HTMLImageElement>) => {
-    setDelayHandler(setTimeout(() => {
-      onCardItemHover(id);
-    }, 700));
-  };
-
-  const handleMouseLeave = () => {
-    clearTimeout(delayHandler);
-  };
 
   const bookmarkClickHandler = (event:MouseEvent<HTMLButtonElement>) => {
     if(authorizationStatus === AuthorizationStatus.Auth){
       setIsActive((current) => !current);
-      let status = 0;
-      if(!isActive){
-        status = 1;
-      }
+      const status = 0;
+      remove(offer.id);
       dispatch(setFavoriteAction([status, id]));
-      dispatch(fetchFavoriteAction());
-    }
-    else{
-      dispatch(redirectToRoute(AppRoute.Login));
     }
   };
 
   return (
-    <article className={isMainPage ? 'cities__card place-card' : 'near-places__card place-card'}>
+    <article className="favorites__card place-card">
       {isPremium &&
         <div className="place-card__mark">
           <span>Premium</span>
         </div>}
-      <div className={isMainPage ? 'cities__image-wrapper place-card__image-wrapper' : 'near-places__image-wrapper place-card__image-wrapper'}>
+      <div className='favorites__image-wrapper place-card__image-wrapper'>
         <Link to={`/${city.name}/offer/${id}`}>
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" onMouseEnter={cardItemHoverHandler} onMouseLeave={handleMouseLeave}/>
+          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place"/>
         </Link>
       </div>
-      <div className="place-card__info">
+      <div className="favorites__card-info place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>
@@ -67,7 +47,7 @@ function Card({offer, onCardItemHover, isMainPage}: CardProps): JSX.Element {
           <button className={isActive && authorizationStatus === AuthorizationStatus.Auth
             ? 'place-card__bookmark-button--active button'
             : 'place-card__bookmark-button button'} type="button"
-          onClick= {bookmarkClickHandler}
+          onClick={bookmarkClickHandler}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
@@ -90,4 +70,4 @@ function Card({offer, onCardItemHover, isMainPage}: CardProps): JSX.Element {
     </article>
   );
 }
-export default Card;
+export default memo(FavoriteCard);

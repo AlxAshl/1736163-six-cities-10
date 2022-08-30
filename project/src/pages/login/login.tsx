@@ -1,35 +1,41 @@
 import Logo from '../../components/logo/logo';
 import {Link} from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector } from '../../hooks';
 import {useRef, FormEvent} from 'react';
 import {useAppDispatch} from '../../hooks';
 import {loginAction} from '../../store/api-actions';
 import {AuthData} from '../../types/auth-data';
 import { getCity } from '../../store/utility-process/selectors';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { redirectToRoute } from '../../store/action';
 
 
 function Login(): JSX.Element {
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const currentCity = useAppSelector(getCity);
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
+
   const onSubmit = (authData: AuthData) => {
     dispatch(loginAction(authData));
+
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-
     if (loginRef.current !== null && passwordRef.current !== null) {
       onSubmit({
         login: loginRef.current.value,
         password: passwordRef.current.value,
       });
     }
-
   };
 
+  if(authorizationStatus === AuthorizationStatus.Auth){
+    dispatch(redirectToRoute(AppRoute.Root));
+  }
   return (
     <>
       <div style={{display: 'none'}}>

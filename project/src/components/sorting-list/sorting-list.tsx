@@ -2,7 +2,7 @@ import { memo, useRef, useState } from 'react';
 import { MouseEvent } from 'react';
 import { useAppSelector } from '../../hooks';
 import { store } from '../../store';
-import { getOffers } from '../../store/data-process/selectors';
+import { getOffers, getUnsortOffers } from '../../store/data-process/selectors';
 import { getSortingType } from '../../store/utility-process/selectors';
 import { sortSelector } from '../../store/utility-process/utility-process';
 import { sortOffers } from './sort-offers';
@@ -10,6 +10,7 @@ import { sortOffers } from './sort-offers';
 
 function SortingList(): JSX.Element {
 
+  const unsortedOffers = useAppSelector(getUnsortOffers);
   const [isActive, setActive] = useState(false);
   const ref = useRef(null);
   const sortingType = useAppSelector(getSortingType);
@@ -19,7 +20,7 @@ function SortingList(): JSX.Element {
     const currentSort = evt.currentTarget.getAttribute('data-tag');
     if(currentSort !== null){
       store.dispatch(sortSelector(currentSort));
-      sortOffers(currentSort, serverOffers);
+      sortOffers(currentSort, serverOffers, unsortedOffers);
     }
   };
 

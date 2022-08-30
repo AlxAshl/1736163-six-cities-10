@@ -8,11 +8,11 @@ import { redirectToRoute } from '../../store/action';
 import ReviewList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
 import OffersList from '../../components/offers-list/offers-list';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Offer } from '../../types/offer';
 import NavBar from '../../components/nav-bar/nav-bar';
 import Preloader from '../../components/preloader/preloader';
-import { getComments, getHotel, getLoadedHotelStatus, getLoadedNearbyStatus, getNearby, getOffers } from '../../store/data-process/selectors';
+import { getComments, getFavorites, getHotel, getLoadedHotelStatus, getLoadedNearbyStatus, getNearby, getOffers } from '../../store/data-process/selectors';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { hotelId } from '../../store/utility-process/utility-process';
 
@@ -24,23 +24,20 @@ function Room(): JSX.Element {
     const currentPoint = serverOffers.find((point) => point.id === cardItemId);
     setSelectedCard(currentPoint);
   };
-
+  const [cardUpdated, setCardUpdated] = useState(false);
   const dispatch = useAppDispatch();
   const {id, city} = useParams();
 
-  if (id !== useAppSelector((state) => state.UTILITY.hotelId)){
+  useEffect(() => {
+    setCardUpdated(true);
     const value = id;
     dispatch(hotelId(value));
     dispatch(fetchCommentAction());
     dispatch(fetchNearbytAction());
     dispatch(fetchHotelAction());
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
-  }
+  }, [id, dispatch]);
 
+  const favorites = useAppSelector(getFavorites);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const serverOffers = useAppSelector(getOffers);
   const hotel = useAppSelector(getHotel);
@@ -49,14 +46,18 @@ function Room(): JSX.Element {
   const isHotelLoaded = useAppSelector(getLoadedHotelStatus);
   const isNearbyLoaded = useAppSelector(getLoadedNearbyStatus);
 
+
+  if (city !== undefined && !(Object.values<string>(CityList).includes(city))){
+    dispatch(redirectToRoute(AppRoute.Notfound));
+  }
+
   if (hotel === undefined && isHotelLoaded) {
 
-    dispatch(redirectToRoute(AppRoute.Notfound));
     throw new Error('Couldn\'t find offer');
 
   }
 
-  if(!isHotelLoaded){
+  if(!isHotelLoaded && cardUpdated){
 
     const {bedrooms, description, goods, maxAdults, images, isPremium, price, title, rating, type, host:{avatarUrl, name, isPro}} = hotel;
 
@@ -73,7 +74,7 @@ function Room(): JSX.Element {
                 <div className="header__left">
                   <Logo />
                 </div>
-                <NavBar city = {city}/>
+                <NavBar favorites={favorites} city = {city}/>
               </div>
             </div>
           </header>
