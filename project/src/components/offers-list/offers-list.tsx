@@ -33,3 +33,4 @@ function OffersList({ serverOffers, onCardItemHover}: OffersListProps): JSX.Elem
 
 export default memo(OffersList, (prevProps, nextProps) => prevProps.serverOffers === nextProps.serverOffers);
 
+
