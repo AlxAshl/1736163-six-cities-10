@@ -2,24 +2,38 @@ import {Offer} from '../../types/offer';
 import {useState, MouseEvent} from 'react';
 import {Link} from 'react-router-dom';
 
+
 type CardProps = {
   offer: Offer;
+  onCardItemHover: (cardItemId: number) => void
+  isMainPage: boolean
 }
 
-function Card({offer}: CardProps): JSX.Element {
+function Card({offer, onCardItemHover, isMainPage}: CardProps): JSX.Element {
 
   const {isPremium, price, description, rating, type, previewImage, id, city} = offer;
   const [isActive, setIsActive] = useState(false);
+  const [delayHandler, setDelayHandler] = useState<any>();// ОПРЕДЕЛИТЬ ТИП
+  const cardItemHoverHandler = (event: MouseEvent<HTMLImageElement>) => {
+    event.preventDefault();
+    setDelayHandler((setTimeout(() => {
+      onCardItemHover(id);
+    }, 700)));
+  };
+
+  const handleMouseLeave = () => {
+    clearTimeout(delayHandler);
+  };
 
   return (
-    <article className="cities__card place-card">
+    <article className={isMainPage ? 'cities__card place-card' : 'near-places__card place-card'}>
       {isPremium &&
         <div className="place-card__mark">
           <span>Premium</span>
         </div>}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={isMainPage ? 'cities__image-wrapper place-card__image-wrapper' : 'near-places__image-wrapper place-card__image-wrapper'}>
         <Link to={`/${city.name}/offer/${id}`}>
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
+          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" onMouseEnter={cardItemHoverHandler} onMouseLeave={handleMouseLeave}/>
         </Link>
       </div>
       <div className="place-card__info">

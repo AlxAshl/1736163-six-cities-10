@@ -1,10 +1,11 @@
 import {useRef, useEffect} from 'react';
-import L, {Icon, LatLng, Marker} from 'leaflet';
+import L, {Icon, LayerGroup, Marker} from 'leaflet';
 import useMap from '../../hooks/useMap';
-import {URL_MARKER_DEFAULT} from '../../const';
+import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../const';
 import 'leaflet/dist/leaflet.css';
-import { useAppSelector } from '../../hooks';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+import { Offer } from '../../types/offer';
+import { defineLocation } from '../../utils';
 
 
 const defaultCustomIcon = new Icon({
@@ -13,36 +14,67 @@ const defaultCustomIcon = new Icon({
   iconAnchor: [15, 40]
 });
 
-const markerGroup = L.layerGroup();
+const currentCustomIcon = new Icon({
+  iconUrl: URL_MARKER_CURRENT,
+  iconSize: [30, 40],
+  iconAnchor: [15, 40],
+});
 
-function Map(): JSX.Element {
+const markerGroup: LayerGroup = L.layerGroup();
+let marker: Marker;
+type MapProps = {
+  serverOffers: Offer[]
+  selectedCard: Offer | undefined;
+}
 
+
+function Map({serverOffers, selectedCard}:MapProps): JSX.Element {
+
+  markerGroup.clearLayers();
+  const currentLocation = useLocation();
+  const isMainPage = defineLocation(currentLocation.pathname);
   const {city} = useParams();
-  const {serverOffers} = useAppSelector((state) => state);
   const selectedCityOffers = serverOffers.filter((offerObj) =>offerObj.city.name === city);
   const {location} = selectedCityOffers[0];
   const mapRef = useRef(null);
   const map = useMap(mapRef, location);
 
   useEffect(() => {
-    markerGroup.clearLayers();
+    if(map){
+      markerGroup.remove();
+      markerGroup.clearLayers();
+    }
+
     if (map) {
+
+      if(!isMainPage){
+        map.scrollWheelZoom.disable();
+        map.setZoom(13);
+      }
+
       selectedCityOffers.forEach((point) => {
-        const marker = new Marker({
+        marker = L.marker({
           lat: point.location.latitude,
           lng: point.location.longitude
         });
         marker
-          .setIcon(defaultCustomIcon)
+          .setIcon((selectedCard !== undefined && point.id === selectedCard.id)
+            ? currentCustomIcon
+            : defaultCustomIcon)
+
           .addTo(markerGroup);
+        marker.removeFrom(map);
+        selectedCard !== undefined && point.id === selectedCard.id && isMainPage
+          ? map.flyTo(marker.getLatLng())
+          : marker.remove();
       });
       markerGroup.addTo(map);
-      map.setView(new LatLng(selectedCityOffers[0].city.location.latitude, selectedCityOffers[0].city.location.longitude), map.getZoom());
     }
 
-  }, [map, selectedCityOffers]);
+  }, [selectedCityOffers, selectedCard, isMainPage, map]);
 
-  return <div style={{height: '1000px'}} ref={mapRef} className='cities__map'></div>;
+  return <div style={isMainPage ? {height: '1000px'} : {height: '500px', width: '70%', left: '15%'}} ref={mapRef} className={isMainPage ? 'cities__map' : 'property__map map'}></div>;
 }
 
 export default Map;
+

@@ -1,6 +1,9 @@
-import {processErrorHandle} from './process-error-handle';
 import {StatusCodes} from 'http-status-codes';
-import axios, {AxiosInstance, AxiosResponse, AxiosError} from 'axios';
+import axios, {AxiosInstance, AxiosResponse, AxiosError, AxiosRequestConfig} from 'axios';
+import { APIRoute } from '../const';
+import { store } from '../store';
+import {getToken} from './token';
+import {toast} from 'react-toastify';
 
 const StatusCodeMapping: Record<number, boolean> = {
   [StatusCodes.BAD_REQUEST]: true,
@@ -23,12 +26,51 @@ export const createAPI = (): AxiosInstance => {
     (response) => response,
     (error: AxiosError) => {
       if (error.response && shouldDisplayError(error.response)) {
-        processErrorHandle(error.response.data.error);
+        toast.warn(error.response.data.error);
       }
 
       throw error;
     }
   );
 
+  api.interceptors.request.use(
+    (config: AxiosRequestConfig) => {
+      const token = getToken();
+
+      if (token) {
+        config.headers['x-token'] = token;
+      }
+
+      return config;
+    },
+  );
+
+  api.interceptors.request.use(
+    (config: AxiosRequestConfig) => {
+      if(config.url === `${APIRoute.Comments}/`){
+        const state = store.getState();
+        config.url = `${APIRoute.Comments}/${state.UTILITY.hotelId}`;
+      }
+      if(config.url === '/nearby'){
+        const state = store.getState();
+        config.url = `${APIRoute.Offers}/${state.UTILITY.hotelId}/nearby`;
+      }
+      if(config.url === '/hotel'){
+        const state = store.getState();
+        config.url = `${APIRoute.Offers}/${state.UTILITY.hotelId}`;
+      }
+      if(config.url === '/commentPost'){
+        const state = store.getState();
+        config.url = `${APIRoute.Comments}/${state.UTILITY.hotelId}`;
+      }
+      if(config.url === '/setFavorite'){
+        const state = store.getState();
+        config.url = `${APIRoute.Favorite}/${state.UTILITY.hotelId}`;
+      }
+      return config;
+    }
+  );
+
   return api;
 };
+

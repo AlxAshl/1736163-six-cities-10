@@ -1,15 +1,17 @@
 export enum AppRoute {
   Login = '/login',
-  Favourites = '/favourites',
+  Favourites = '/favorite',
   Root = '/',
+  DefaultCity = '/Paris',
   City = '/:city',
-  Room = ':city/offer/:id'
+  Room = ':city/offer/:id',
+  Notfound = '/404'
 }
 
 export enum AuthorizationStatus {
-  Auth='AUTH',
-  NoAuth='NO_AUTH',
-  Unknown='UNKNOWN'
+  Auth = 'AUTH',
+  NoAuth = 'NO_AUTH',
+  Unknown = 'UNKNOWN',
 }
 
 export enum CityList {
@@ -22,13 +24,20 @@ export enum CityList {
 }
 
 export type CitiesEnum = typeof CityList[keyof typeof CityList];
-
+export const DEFAULT_MAP_ZOOM = 14;
 export const URL_MARKER_DEFAULT = 'img/pin.svg';
 export const URL_MARKER_CURRENT = 'img/pin-active.svg';
 
 export enum APIRoute {
   Offers = '/hotels',
-  Comments = '/comments'
+  Comments = '/comments',
+  Login = '/login',
+  Logout = '/logout',
+  Favorite = '/favorite'
 }
 
-export const TIMEOUT_SHOW_ERROR = 2000;
+export enum NameSpace {
+  Data = 'DATA',
+  Utility = 'UTILITY',
+  User = 'USER',
+}
