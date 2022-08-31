@@ -2,7 +2,7 @@ import Logo from '../../components/logo/logo';
 import SortingList from '../../components/sorting-list/sorting-list';
 import OffersList from '../../components/offers-list/offers-list';
 import { useParams } from 'react-router-dom';
-import {AppRoute, CityList} from '../../const';
+import {AppRoute, AuthorizationStatus, CityList} from '../../const';
 import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
 import {useAppDispatch, useAppSelector} from '../../hooks';
@@ -10,11 +10,12 @@ import { useEffect, useState } from 'react';
 import Preloader from '../../components/preloader/preloader';
 import NavBar from '../../components/nav-bar/nav-bar';
 import { store } from '../../store';
-import {fetchOfferAction} from '../../store/api-actions';
+import {fetchFavoriteAction, fetchOfferAction} from '../../store/api-actions';
 import { Offer } from '../../types/offer';
 import { redirectToRoute } from '../../store/action';
 import MainEmpty from '../../components/main-empty/main-empty';
-import { getLoadedDataStatus, getOffers } from '../../store/data-process/selectors';
+import { getFavorites, getLoadedDataStatus, getLoadedFavoritesStatus, getOffers } from '../../store/data-process/selectors';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 
 store.dispatch(fetchOfferAction());
@@ -23,9 +24,12 @@ function MainPage(): JSX.Element {
 
   const {city} = useParams();
   const isDataLoaded = useAppSelector(getLoadedDataStatus);
+  const isFavoritesLoaded = useAppSelector(getLoadedFavoritesStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const serverOffers = useAppSelector(getOffers);
+  const favorites = useAppSelector(getFavorites);
   const placesCount = serverOffers.filter((offerObj) => offerObj.city.name === city);
-  const dispach = useAppDispatch();
+  const dispatch = useAppDispatch();
   const [selectedCard, setSelectedCard] = useState<Offer | undefined>(undefined);
 
   const onCardItemHover = (cardItemId: number) => {
@@ -34,15 +38,28 @@ function MainPage(): JSX.Element {
   };
 
   useEffect(() => {
+    if(authorizationStatus === AuthorizationStatus.Auth){
+      store.dispatch(fetchFavoriteAction());
+    }
+  },[authorizationStatus]);
+
+  useEffect(() => {
+    if(authorizationStatus === AuthorizationStatus.Auth && isFavoritesLoaded){
+      dispatch(fetchFavoriteAction());
+    }
     if (city === undefined && city !== AppRoute.Notfound) {
-      dispach(redirectToRoute(AppRoute.DefaultCity));
+      dispatch(redirectToRoute(AppRoute.DefaultCity));
     }
     if (city && city !== ''){
       if(!Object.keys(CityList).includes(city)){
-        dispach(redirectToRoute(AppRoute.Notfound));
+        dispatch(redirectToRoute(AppRoute.Notfound));
       }
     }
   });
+
+  if(!placesCount){
+    return (<MainEmpty />);
+  }
 
   return (
     <>
@@ -57,7 +74,7 @@ function MainPage(): JSX.Element {
               <div className="header__left">
                 <Logo />
               </div>
-              <NavBar city = {city}/>
+              <NavBar favorites={favorites} city = {city}/>
             </div>
           </div>
         </header>
@@ -89,7 +106,6 @@ function MainPage(): JSX.Element {
                 </div>
               </div>
             </div>}
-          <MainEmpty />
         </main>
       </div>
     </>

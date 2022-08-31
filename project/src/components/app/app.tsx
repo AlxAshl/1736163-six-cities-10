@@ -38,10 +38,7 @@ function App(): JSX.Element {
             <Room />
           }
         />
-        <Route
-          path={AppRoute.Notfound}
-          element={<PageNotFound/>}
-        />
+        {([AppRoute.Notfound, AppRoute.NotMatched]).map((path) => <Route key={path.length} path={path} element={<PageNotFound />} />)}
       </Routes>
     </HistoryRouter>
   );

@@ -6,11 +6,14 @@ import {fetchCommentAction, fetchFavoriteAction, fetchHotelAction, fetchNearbytA
 
 
 const initialState: DataProcess = {
+  isSetFavouritesSet: false,
   isDataLoaded:false,
   isHotelLoaded: false,
   isNearbyLoaded: false,
   isFavoritesLoaded: false,
+  isPostLoaded: false,
   serverOffers: [],
+  unsortedOffers: [],
   comments: [],
   nearby: [],
   hotel:  {} as Offer,
@@ -32,6 +35,7 @@ export const dataProcess = createSlice({
       })
       .addCase(fetchOfferAction.fulfilled, (state, action) => {
         state.serverOffers = action.payload;
+        state.unsortedOffers = action.payload;
         state.isDataLoaded = false;
       })
       .addCase(fetchHotelAction.pending, (state) => {
@@ -62,17 +66,17 @@ export const dataProcess = createSlice({
       .addCase(fetchFavoriteAction.pending, (state) => {
         state.isFavoritesLoaded = true;
       })
-      .addCase(setFavoriteAction.fulfilled, (state, action) => {
-        // logic
+      .addCase(setFavoriteAction.fulfilled, (state) => {
+        state.isSetFavouritesSet = false;
       })
       .addCase(setFavoriteAction.pending, (state, action) => {
-        // logic
+        state.isSetFavouritesSet = true;
       })
-      .addCase(postCommentAction.fulfilled, (state, action) => {
-        // logic
+      .addCase(postCommentAction.fulfilled, (state) => {
+        state.isPostLoaded = false;
       })
-      .addCase(postCommentAction.pending, (state, action) => {
-        // logic
+      .addCase(postCommentAction.pending, (state) => {
+        state.isPostLoaded = true;
       });
   }
 });

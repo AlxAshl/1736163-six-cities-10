@@ -1,11 +1,9 @@
 import { store } from '../../store';
-import { fetchOfferAction } from '../../store/api-actions';
 import { loadOffers } from '../../store/data-process/data-process';
 import { Offer } from '../../types/offer';
 
 
-export function sortOffers(sortingType: string, serverOffers: Offer[]){
-
+export function sortOffers(sortingType: string, serverOffers: Offer[], unsortedOffers: Offer[]){
   let sortedOffers: Offer[] = [];
   switch (sortingType) {
     case 'Price: low to high':
@@ -18,10 +16,8 @@ export function sortOffers(sortingType: string, serverOffers: Offer[]){
       sortedOffers = [...serverOffers].sort((a, b) => (a.rating > b.rating ? -1 : 1));
       break;
     default:
-      store.dispatch(fetchOfferAction());
-      sortedOffers = [...serverOffers];
+      sortedOffers = unsortedOffers;
       break;
   }
   store.dispatch(loadOffers(sortedOffers));
-  //устранить перерисовку при возврате на Popular
 }

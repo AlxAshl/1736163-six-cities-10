@@ -7,7 +7,7 @@ import {UserData} from '../types/user-data';
 import {redirectToRoute} from './action';
 import {APIRoute, AppRoute} from '../const';
 import { Review } from '../types/review.js';
-import {saveToken, dropToken, Token} from '../services/token';
+import {saveToken, dropToken} from '../services/token';
 import {saveUser} from '../services/user-data';
 import { FormDataType } from '../components/comment-form/comment-form.js';
 
@@ -43,7 +43,7 @@ export const fetchNearbytAction = createAsyncThunk<Offer[], undefined, {
 }>(
   'data/fetchNearby',
   async (_arg, {extra: api}) => {
-    const {data} = await api.get<Offer[]>('/nearby');
+    const {data} = await api.get<Offer[]>(`${APIRoute.Offers}/hotelId/nearby`);
     return data;
   },
 );
@@ -55,7 +55,7 @@ export const fetchHotelAction = createAsyncThunk<Offer, undefined, {
 }>(
   'data/fetchHotel',
   async (_arg, {extra: api}) => {
-    const {data} = await api.get<Offer>('/hotel');
+    const {data} = await api.get<Offer>(`${APIRoute.Offers}/hotel`);
     return data;
   }
 );
@@ -64,24 +64,22 @@ export const fetchFavoriteAction = createAsyncThunk<Offer[], undefined, {
   dispatch: AppDispatch,
   state: State,
   extra: AxiosInstance
-  header: {token: Token}
 }>(
-  'data/fetchFavourites',
+  'data/fetchFavorites',
   async (_arg, {extra: api}) => {
     const {data} = await api.get<Offer[]>(APIRoute.Favorite);
     return data;
   }
 );
 
-export const setFavoriteAction = createAsyncThunk<Offer[], undefined, {
+export const setFavoriteAction = createAsyncThunk<void, number[], {
   dispatch: AppDispatch,
   state: State,
   extra: AxiosInstance
 }>(
   'data/setFavourites',
-  async (_arg, {extra: api}) => {
-    const {data} = await api.get<Offer[]>('/setfavourites');
-    return data;
+  async ([status,id], {extra: api}) => {
+    await api.post<number>(`${APIRoute.Favorite}/${id}/${status}`);
   }
 );
 
@@ -92,7 +90,7 @@ export const postCommentAction = createAsyncThunk<void, FormDataType, {
 }>(
   'user/commentPost',
   async (formData, {extra: api}) => {
-    api.post<FormDataType>('/commentPost', formData);
+    api.post<FormDataType>(`${APIRoute.Comments}/`, formData);
 
   },
 );

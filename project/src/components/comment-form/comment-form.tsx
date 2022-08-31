@@ -1,4 +1,6 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useAppDispatch } from '../../hooks';
+import { fetchCommentAction } from '../../store/api-actions';
 
 
 type CommentFormProps = {
@@ -12,22 +14,37 @@ export type FormDataType = {
 
 function CommentForm(props: CommentFormProps): JSX.Element {
 
+  const dispatch = useAppDispatch();
+  const [updateComment, SetUpdateComment] = useState(false);
   const {onComment} = props;
   const [formData, setFormData] = useState({
     comment: '',
     rating: '',
   });
+  const removeInput = () => {
+    setFormData({comment: '', rating: ''});
+  };
+
+  useEffect(()=>{
+    SetUpdateComment(true);
+    dispatch(fetchCommentAction());
+  },[updateComment, dispatch]);
 
   const formChangeHandler = (evt: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
     const {name, value} = evt.target;
     setFormData({...formData, [name]: value,});
   };
 
+  if(!updateComment){
+    return (<div></div>);
+  }
+
   return (
     <form onSubmit={(evt: FormEvent<HTMLFormElement>) => {
       evt.preventDefault();
       onComment(formData);
-      //очистка формы
+      removeInput();
+      SetUpdateComment(false);
     }} className="reviews__form form" action="#" method="post"
     >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>

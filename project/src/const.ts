@@ -5,7 +5,8 @@ export enum AppRoute {
   DefaultCity = '/Paris',
   City = '/:city',
   Room = ':city/offer/:id',
-  Notfound = '/404'
+  Notfound = '/404',
+  NotMatched = '*'
 }
 
 export enum AuthorizationStatus {
@@ -24,7 +25,7 @@ export enum CityList {
 }
 
 export type CitiesEnum = typeof CityList[keyof typeof CityList];
-export const DEFAULT_MAP_ZOOM = 14;
+
 export const URL_MARKER_DEFAULT = 'img/pin.svg';
 export const URL_MARKER_CURRENT = 'img/pin-active.svg';
 

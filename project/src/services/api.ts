@@ -51,21 +51,13 @@ export const createAPI = (): AxiosInstance => {
         const state = store.getState();
         config.url = `${APIRoute.Comments}/${state.UTILITY.hotelId}`;
       }
-      if(config.url === '/nearby'){
+      if(config.url === `${APIRoute.Offers}/hotelId/nearby`){
         const state = store.getState();
         config.url = `${APIRoute.Offers}/${state.UTILITY.hotelId}/nearby`;
       }
-      if(config.url === '/hotel'){
+      if(config.url === `${APIRoute.Offers}/hotel`){
         const state = store.getState();
         config.url = `${APIRoute.Offers}/${state.UTILITY.hotelId}`;
-      }
-      if(config.url === '/commentPost'){
-        const state = store.getState();
-        config.url = `${APIRoute.Comments}/${state.UTILITY.hotelId}`;
-      }
-      if(config.url === '/setFavorite'){
-        const state = store.getState();
-        config.url = `${APIRoute.Favorite}/${state.UTILITY.hotelId}`;
       }
       return config;
     }
