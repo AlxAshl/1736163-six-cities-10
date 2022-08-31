@@ -1,9 +1,9 @@
 import {useRef, useEffect} from 'react';
-import L, {Icon, LayerGroup, Marker} from 'leaflet';
+import L, {Icon, LatLng, LayerGroup, Marker} from 'leaflet';
 import useMap from '../../hooks/useMap';
 import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../const';
 import 'leaflet/dist/leaflet.css';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { defineLocation } from '../../utils';
 
@@ -23,42 +23,39 @@ const currentCustomIcon = new Icon({
 const markerGroup: LayerGroup = L.layerGroup();
 let marker: Marker;
 type MapProps = {
-  serverOffers: Offer[]
+  cityOffers: Offer[]
   selectedCard: Offer | undefined;
 }
 
 
-function Map({serverOffers, selectedCard}:MapProps): JSX.Element {
+function Map({cityOffers, selectedCard}:MapProps): JSX.Element {
 
-  markerGroup.clearLayers();
   const currentLocation = useLocation();
   const isMainPage = defineLocation(currentLocation.pathname);
-  const {city} = useParams();
-  const selectedCityOffers = serverOffers.filter((offerObj) =>offerObj.city.name === city);
-  const {location} = selectedCityOffers[0];
+  const location = cityOffers[0].location;
   const mapRef = useRef(null);
   const map = useMap(mapRef, location);
 
   useEffect(() => {
-    if(map){
-      markerGroup.remove();
-      markerGroup.clearLayers();
-    }
 
     if (map) {
+
+      map.setView(new LatLng(location.latitude, location.longitude), map.getZoom());
+      markerGroup.remove();
+      markerGroup.clearLayers();
 
       if(!isMainPage){
         map.scrollWheelZoom.disable();
         map.setZoom(13);
       }
 
-      selectedCityOffers.forEach((point) => {
+      cityOffers.forEach((point) => {
         marker = L.marker({
           lat: point.location.latitude,
           lng: point.location.longitude
         });
         marker
-          .setIcon((selectedCard !== undefined && point.id === selectedCard.id)
+          .setIcon((selectedCard !== undefined && point.id === selectedCard.id && isMainPage)
             ? currentCustomIcon
             : defaultCustomIcon)
 
@@ -71,7 +68,7 @@ function Map({serverOffers, selectedCard}:MapProps): JSX.Element {
       markerGroup.addTo(map);
     }
 
-  }, [selectedCityOffers, selectedCard, isMainPage, map]);
+  }, [cityOffers, selectedCard, isMainPage, map, location]);
 
   return <div style={isMainPage ? {height: '1000px'} : {height: '500px', width: '70%', left: '15%'}} ref={mapRef} className={isMainPage ? 'cities__map' : 'property__map map'}></div>;
 }

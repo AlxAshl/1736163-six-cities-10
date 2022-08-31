@@ -4,8 +4,8 @@ import {Link} from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { AuthorizationStatus } from '../../const';
+import { fetchFavoriteAction, setFavoriteAction } from '../../store/api-actions';
 
-import { setFavoriteAction } from '../../store/api-actions';
 
 type CardProps = {
   offer: Offer;
@@ -24,6 +24,7 @@ function FavoriteCard({offer, remove}: CardProps): JSX.Element {
       const status = 0;
       remove(offer.id);
       dispatch(setFavoriteAction([status, id]));
+      dispatch(fetchFavoriteAction());
     }
   };
 

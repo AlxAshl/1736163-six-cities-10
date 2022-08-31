@@ -34,4 +34,5 @@ function ReviewCard({userComment}: ReviewProps): JSX.Element {
     </li>
   );
 }
+
 export default ReviewCard;

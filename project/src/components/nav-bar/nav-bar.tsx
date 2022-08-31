@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -9,18 +8,17 @@ import { Offer } from '../../types/offer';
 
 
 type NavBarTypes = {
-  city: string | undefined
   favorites: Offer[];
 }
 
-function NavBar({city, favorites}: NavBarTypes): JSX.Element {
+function NavBar({favorites}: NavBarTypes): JSX.Element {
 
+  const userName = getUser();
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
   const onLogout = () => {
     dispatch(logoutAction());
   };
-  const userName = getUser();
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   return(
     <nav className="header__nav">
@@ -54,4 +52,6 @@ function NavBar({city, favorites}: NavBarTypes): JSX.Element {
   );
 
 }
-export default memo(NavBar);
+
+export default NavBar;
+

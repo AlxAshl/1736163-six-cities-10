@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import {AppRoute, AuthorizationStatus, CityList} from '../../const';
 import CommentForm, { FormDataType } from '../../components/comment-form/comment-form';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { postCommentAction, fetchCommentAction, fetchHotelAction, fetchNearbytAction } from '../../store/api-actions';
+import { postCommentAction, fetchCommentAction, fetchHotelAction, fetchNearbytAction, setFavoriteAction, fetchFavoriteAction } from '../../store/api-actions';
 import { redirectToRoute } from '../../store/action';
 import ReviewList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
@@ -15,6 +15,8 @@ import Preloader from '../../components/preloader/preloader';
 import { getComments, getFavorites, getHotel, getLoadedHotelStatus, getLoadedNearbyStatus, getNearby, getOffers } from '../../store/data-process/selectors';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { hotelId } from '../../store/utility-process/utility-process';
+import { MouseEvent } from 'react';
+import { toast } from 'react-toastify';
 
 
 function Room(): JSX.Element {
@@ -46,16 +48,35 @@ function Room(): JSX.Element {
   const isHotelLoaded = useAppSelector(getLoadedHotelStatus);
   const isNearbyLoaded = useAppSelector(getLoadedNearbyStatus);
 
-
   if (city !== undefined && !(Object.values<string>(CityList).includes(city))){
     dispatch(redirectToRoute(AppRoute.Notfound));
   }
 
   if (hotel === undefined && isHotelLoaded) {
-
-    throw new Error('Couldn\'t find offer');
-
+    dispatch(redirectToRoute(AppRoute.Notfound));
+    toast.error('Couldn\'t find offer');
   }
+
+  const {isFavorite} = hotel;
+  const [isActive, setIsActive] = useState<boolean>(isFavorite);
+
+  const bookmarkClickHandler = (event:MouseEvent<HTMLButtonElement>) => {
+    if(authorizationStatus === AuthorizationStatus.Auth){
+      setIsActive((current) => !current);
+      let status = 0;
+      if(!isActive){
+        status = 1;
+      }
+      dispatch(setFavoriteAction([status, Number(id)]));
+      dispatch(fetchFavoriteAction());
+      status === 1
+        ? toast.success('Added to favorites!')
+        : toast.success('Removed from favorites!');
+    }
+    else{
+      dispatch(redirectToRoute(AppRoute.Login));
+    }
+  };
 
   if(!isHotelLoaded && cardUpdated){
 
@@ -74,7 +95,7 @@ function Room(): JSX.Element {
                 <div className="header__left">
                   <Logo />
                 </div>
-                <NavBar favorites={favorites} city = {city}/>
+                <NavBar favorites={favorites}/>
               </div>
             </div>
           </header>
@@ -101,7 +122,7 @@ function Room(): JSX.Element {
                     <h1 className="property__name">
                       {title}
                     </h1>
-                    <button className="property__bookmark-button button" type="button">
+                    <button className={!isActive ? 'property__bookmark-button button' : 'property__bookmark-button--active button'} type="button" onClick={bookmarkClickHandler}>
                       <svg className="property__bookmark-icon" width="31" height="33">
                         <use xlinkHref="#icon-bookmark"></use>
                       </svg>
@@ -169,8 +190,8 @@ function Room(): JSX.Element {
                   </section>
                 </div>
               </div>
-              {!isNearbyLoaded && city && city !== '' && Object.keys(CityList).includes(city)
-                ? <Map serverOffers={nearby} selectedCard={selectedCard} />
+              {!isNearbyLoaded && nearby.length !== 0
+                ? <Map cityOffers={nearby} selectedCard={selectedCard} />
                 : <Preloader />}
             </section>
             <div className="container">
@@ -184,6 +205,7 @@ function Room(): JSX.Element {
       </>
     );
   }
+
   else{
     return (
       <Preloader/>
