@@ -6,21 +6,28 @@ import {useRef, FormEvent} from 'react';
 import {useAppDispatch} from '../../hooks';
 import {loginAction} from '../../store/api-actions';
 import {AuthData} from '../../types/auth-data';
-import { getCity } from '../../store/utility-process/selectors';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { redirectToRoute } from '../../store/action';
+import { CityList } from '../../const';
 
+
+const randomCityList: string[] = [];
+Object.values(CityList).map((City) => {
+  randomCityList.push(City);
+  return randomCityList as string[];
+});
+const randomCity = randomCityList[Math.floor(Math.random() * randomCityList.length)];
 
 function Login(): JSX.Element {
+
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const currentCity = useAppSelector(getCity);
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
 
+
   const onSubmit = (authData: AuthData) => {
     dispatch(loginAction(authData));
-
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
@@ -71,8 +78,8 @@ function Login(): JSX.Element {
             </section>
             <section className="locations locations--login locations--current">
               <div className="locations__item">
-                <Link to={AppRoute.Root} className="locations__item-link">
-                  <span>{currentCity}</span>
+                <Link to={`${AppRoute.Root}${randomCity}`} className="locations__item-link">
+                  <span>{randomCity}</span>
                 </Link>
               </div>
             </section>

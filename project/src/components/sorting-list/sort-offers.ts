@@ -21,3 +21,5 @@ export function sortOffers(sortingType: string, serverOffers: Offer[], unsortedO
   }
   store.dispatch(loadOffers(sortedOffers));
 }
+
+

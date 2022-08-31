@@ -132,3 +132,4 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     dispatch(redirectToRoute(AppRoute.Root));
   },
 );
+

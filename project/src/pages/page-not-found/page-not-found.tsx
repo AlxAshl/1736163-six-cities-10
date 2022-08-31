@@ -13,4 +13,5 @@ function PageNotFound(): JSX.Element {
     </section>
   );
 }
+
 export default PageNotFound;

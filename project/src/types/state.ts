@@ -5,10 +5,12 @@ import { Offer } from './offer';
 
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus
+  errorMessage: string,
+  initialConnection: boolean,
 };
 
 export type DataProcess = {
-  isSetFavouritesSet: boolean,
+  isFavouritesSet: boolean, // возможно потребуется когда нужно будет обновить статус(количество)
   isDataLoaded: boolean,
   isHotelLoaded: boolean,
   isNearbyLoaded: boolean,

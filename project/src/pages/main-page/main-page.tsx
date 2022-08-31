@@ -28,7 +28,7 @@ function MainPage(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const serverOffers = useAppSelector(getOffers);
   const favorites = useAppSelector(getFavorites);
-  const placesCount = serverOffers.filter((offerObj) => offerObj.city.name === city);
+  const cityOffers = serverOffers.filter((offerObj) => offerObj.city.name === city);
   const dispatch = useAppDispatch();
   const [selectedCard, setSelectedCard] = useState<Offer | undefined>(undefined);
 
@@ -57,10 +57,6 @@ function MainPage(): JSX.Element {
     }
   });
 
-  if(!placesCount){
-    return (<MainEmpty />);
-  }
-
   return (
     <>
       <div style={{display: 'none'}}>
@@ -74,12 +70,11 @@ function MainPage(): JSX.Element {
               <div className="header__left">
                 <Logo />
               </div>
-              <NavBar favorites={favorites} city = {city}/>
+              <NavBar favorites={favorites}/>
             </div>
           </div>
         </header>
-
-        <main className="page__main page__main--index">
+        <main className={cityOffers.length === 0 ? 'page__main page__main--index page__main--index-empty' : 'page__main page__main--index'}>
           <h1 className="visually-hidden">Cities</h1>
           <div className="tabs">
             <section className="locations container">
@@ -88,27 +83,33 @@ function MainPage(): JSX.Element {
               </ul>
             </section>
           </div>
-          {isDataLoaded ? <Preloader /> :
+          {cityOffers.length === 0
+            ? <MainEmpty />
+            :
             <div className="cities">
-              <div className="cities__places-container container">
-                <section className="cities__places places">
-                  <h2 className="visually-hidden">Places</h2>
-                  <b className="places__found">{placesCount.length} places to stay in {city}</b>
-                  <SortingList />
-                  {serverOffers
-                    ? <OffersList onCardItemHover={onCardItemHover} serverOffers={serverOffers} />
-                    : null}
-                </section>
-                <div className="cities__right-section">
-                  {serverOffers && city && city !== '' && Object.keys(CityList).includes(city)
-                    ? <Map serverOffers={serverOffers} selectedCard={selectedCard}/>
-                    : <Preloader />}
-                </div>
-              </div>
+              {isDataLoaded
+                ? <Preloader />
+                :
+                <div className="cities__places-container container">
+                  <section className="cities__places places">
+                    <h2 className="visually-hidden">Places</h2>
+                    <b className="places__found">{cityOffers.length} places to stay in {city}</b>
+                    <SortingList />
+                    {serverOffers
+                      ? <OffersList onCardItemHover={onCardItemHover} serverOffers={serverOffers} />
+                      : null}
+                  </section>
+                  <div className="cities__right-section">
+                    {serverOffers && cityOffers.length !== 0
+                      ? <Map cityOffers={cityOffers} selectedCard={selectedCard}/>
+                      : <Preloader />}
+                  </div>
+                </div>}
             </div>}
         </main>
       </div>
     </>
   );
 }
+
 export default MainPage;

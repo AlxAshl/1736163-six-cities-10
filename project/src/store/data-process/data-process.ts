@@ -1,4 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
+import browserHistory from '../../browser-history';
 import {NameSpace} from '../../const';
 import { Offer } from '../../types/offer';
 import {DataProcess} from '../../types/state';
@@ -6,7 +8,7 @@ import {fetchCommentAction, fetchFavoriteAction, fetchHotelAction, fetchNearbytA
 
 
 const initialState: DataProcess = {
-  isSetFavouritesSet: false,
+  isFavouritesSet: false,
   isDataLoaded:false,
   isHotelLoaded: false,
   isNearbyLoaded: false,
@@ -59,6 +61,10 @@ export const dataProcess = createSlice({
       .addCase(fetchNearbytAction.pending, (state) => {
         state.isNearbyLoaded = true;
       })
+      .addCase(fetchNearbytAction.rejected, (state) => {
+        browserHistory.push('/*');
+        state.isNearbyLoaded = true;
+      })
       .addCase(fetchFavoriteAction.fulfilled, (state, action) => {
         state.favorite = action.payload;
         state.isFavoritesLoaded = false;
@@ -67,13 +73,17 @@ export const dataProcess = createSlice({
         state.isFavoritesLoaded = true;
       })
       .addCase(setFavoriteAction.fulfilled, (state) => {
-        state.isSetFavouritesSet = false;
+        state.isFavouritesSet = false;
       })
-      .addCase(setFavoriteAction.pending, (state, action) => {
-        state.isSetFavouritesSet = true;
+      .addCase(setFavoriteAction.pending, (state) => {
+        state.isFavouritesSet = true;
       })
       .addCase(postCommentAction.fulfilled, (state) => {
         state.isPostLoaded = false;
+      })
+      .addCase(postCommentAction.rejected, (state) => {
+        state.isPostLoaded = false;
+        toast.error('Couldnt send your post, something went wrong');
       })
       .addCase(postCommentAction.pending, (state) => {
         state.isPostLoaded = true;
@@ -82,3 +92,4 @@ export const dataProcess = createSlice({
 });
 
 export const {loadOffers} = dataProcess.actions;
+

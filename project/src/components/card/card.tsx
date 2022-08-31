@@ -6,6 +6,7 @@ import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { redirectToRoute } from '../../store/action';
 import { setFavoriteAction, fetchFavoriteAction } from '../../store/api-actions';
+import { toast } from 'react-toastify';
 
 
 type CardProps = {
@@ -41,6 +42,9 @@ function Card({offer, onCardItemHover, isMainPage}: CardProps): JSX.Element {
       }
       dispatch(setFavoriteAction([status, id]));
       dispatch(fetchFavoriteAction());
+      status === 1
+        ? toast.success('Added to favorites!')
+        : toast.success('Removed from favorites!');
     }
     else{
       dispatch(redirectToRoute(AppRoute.Login));
