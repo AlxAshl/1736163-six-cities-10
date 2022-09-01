@@ -32,7 +32,7 @@ function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const [selectedCard, setSelectedCard] = useState<Offer | undefined>(undefined);
 
-  const onCardItemHover = (cardItemId: number) => {
+  const handleCardItemHover = (cardItemId: number) => {
     const currentPoint = serverOffers.find((point) => point.id === cardItemId);
     setSelectedCard(currentPoint);
   };
@@ -96,7 +96,7 @@ function MainPage(): JSX.Element {
                     <b className="places__found">{cityOffers.length} places to stay in {city}</b>
                     <SortingList />
                     {serverOffers
-                      ? <OffersList onCardItemHover={onCardItemHover} serverOffers={serverOffers} />
+                      ? <OffersList onCardItemHover={handleCardItemHover} serverOffers={serverOffers} />
                       : null}
                   </section>
                   <div className="cities__right-section">

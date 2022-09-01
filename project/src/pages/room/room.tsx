@@ -22,7 +22,7 @@ import { toast } from 'react-toastify';
 function Room(): JSX.Element {
 
   const [selectedCard, setSelectedCard] = useState<Offer | undefined>(undefined);
-  const onCardItemHover = (cardItemId: number) => {
+  const handleCardItemHover = (cardItemId: number) => {
     const currentPoint = serverOffers.find((point) => point.id === cardItemId);
     setSelectedCard(currentPoint);
   };
@@ -60,7 +60,7 @@ function Room(): JSX.Element {
   const {isFavorite} = hotel;
   const [isActive, setIsActive] = useState<boolean>(isFavorite);
 
-  const bookmarkClickHandler = (event:MouseEvent<HTMLButtonElement>) => {
+  const handleButtonClick = (event:MouseEvent<HTMLButtonElement>) => {
     if(authorizationStatus === AuthorizationStatus.Auth){
       setIsActive((current) => !current);
       let status = 0;
@@ -122,7 +122,7 @@ function Room(): JSX.Element {
                     <h1 className="property__name">
                       {title}
                     </h1>
-                    <button className={!isActive ? 'property__bookmark-button button' : 'property__bookmark-button--active button'} type="button" onClick={bookmarkClickHandler}>
+                    <button className={!isActive ? 'property__bookmark-button button' : 'property__bookmark-button--active button'} type="button" onClick={handleButtonClick}>
                       <svg className="property__bookmark-icon" width="31" height="33">
                         <use xlinkHref="#icon-bookmark"></use>
                       </svg>
@@ -192,13 +192,20 @@ function Room(): JSX.Element {
               </div>
               {!isNearbyLoaded && nearby.length !== 0
                 ? <Map cityOffers={nearby} selectedCard={selectedCard} />
-                : <Preloader />}
+                : ''}
             </section>
+
             <div className="container">
+              {!isNearbyLoaded &&
               <section className="near-places places">
-                <h2 className="near-places__title">Other places in the neighbourhood</h2>
-                <OffersList onCardItemHover={onCardItemHover} serverOffers={nearby} />
-              </section>
+                {nearby.length === 0
+                  ? <h2 className="near-places__title">No other places to stay nearby :/</h2>
+                  :
+                  <>
+                    <h2 className="near-places__title">Other places in the neighbourhood</h2>
+                    <OffersList onCardItemHover={handleCardItemHover} serverOffers={nearby} />
+                  </>}
+              </section>}
             </div>
           </main>
         </div>

@@ -24,7 +24,6 @@ export enum CityList {
   Dusseldorf = 'Dusseldorf',
 }
 
-export type CitiesEnum = typeof CityList[keyof typeof CityList];
 export const URL_MARKER_DEFAULT = 'img/pin.svg';
 export const URL_MARKER_CURRENT = 'img/pin-active.svg';
 
