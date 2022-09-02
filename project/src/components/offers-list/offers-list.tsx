@@ -10,7 +10,7 @@ type OffersListProps = {
   onCardItemHover: (cardItemId: number) => void
 }
 
-function OffersList({ serverOffers, onCardItemHover}: OffersListProps): JSX.Element {
+function OffersList({ serverOffers, onCardItemHover: handleCardHover}: OffersListProps): JSX.Element {
 
   const {city} = useParams();
   const filteredOffers = serverOffers.filter((offerObj) => offerObj.city.name === city);
@@ -22,7 +22,7 @@ function OffersList({ serverOffers, onCardItemHover}: OffersListProps): JSX.Elem
       {filteredOffers.map((offer) => (
         <Card key={offer.id}
           offer={offer}
-          onCardItemHover={onCardItemHover}
+          onCardItemHover={handleCardHover}
           isMainPage={isMainPage}
         />
       ))}

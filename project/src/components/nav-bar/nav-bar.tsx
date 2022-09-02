@@ -16,7 +16,7 @@ function NavBar({favorites}: NavBarTypes): JSX.Element {
   const userName = getUser();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
-  const onLogout = () => {
+  const handleLogoutClick = () => {
     dispatch(logoutAction());
   };
 
@@ -38,7 +38,7 @@ function NavBar({favorites}: NavBarTypes): JSX.Element {
           ?
           <li className="header__nav-item">
             <Link to={AppRoute.Root} className="header__nav-link">
-              <span className="header__signout" onClick={onLogout}>Sign out</span>
+              <span className="header__signout" onClick={handleLogoutClick}>Sign out</span>
             </Link>
           </li>
           :

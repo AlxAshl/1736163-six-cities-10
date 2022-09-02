@@ -18,7 +18,7 @@ function FavoriteCard({offer, remove}: CardProps): JSX.Element {
   const {isPremium, price, title, rating, type, previewImage, id, city, isFavorite} = offer;
   const [isActive, setIsActive] = useState<boolean>(isFavorite);
 
-  const bookmarkClickHandler = (event:MouseEvent<HTMLButtonElement>) => {
+  const handleBookmarkClick = (event:MouseEvent<HTMLButtonElement>) => {
     if(authorizationStatus === AuthorizationStatus.Auth){
       setIsActive((current) => !current);
       const status = 0;
@@ -48,7 +48,7 @@ function FavoriteCard({offer, remove}: CardProps): JSX.Element {
           <button className={isActive && authorizationStatus === AuthorizationStatus.Auth
             ? 'place-card__bookmark-button--active button'
             : 'place-card__bookmark-button button'} type="button"
-          onClick={bookmarkClickHandler}
+          onClick={handleBookmarkClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>

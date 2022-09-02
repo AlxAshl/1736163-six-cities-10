@@ -23,13 +23,13 @@ function Card({offer, onCardItemHover, isMainPage}: CardProps): JSX.Element {
   const [isActive, setIsActive] = useState<boolean>(isFavorite);
   const [delayHandler, setDelayHandler] = useState<NodeJS.Timer>();
 
-  const cardItemHoverHandler = (event: MouseEvent<HTMLImageElement>) => {
+  const handleCardItemMouseEnter = (event: MouseEvent<HTMLImageElement>) => {
     setDelayHandler(setTimeout(() => {
       onCardItemHover(id);
     }, 700));
   };
 
-  const handleMouseLeave = () => {
+  const handleCardItemMouseLeave = () => {
     clearTimeout(delayHandler);
   };
 
@@ -59,7 +59,7 @@ function Card({offer, onCardItemHover, isMainPage}: CardProps): JSX.Element {
         </div>}
       <div className={isMainPage ? 'cities__image-wrapper place-card__image-wrapper' : 'near-places__image-wrapper place-card__image-wrapper'}>
         <Link to={`/${city.name}/offer/${id}`}>
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" onMouseEnter={cardItemHoverHandler} onMouseLeave={handleMouseLeave}/>
+          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" onMouseEnter={handleCardItemMouseEnter} onMouseLeave={handleCardItemMouseLeave}/>
         </Link>
       </div>
       <div className="place-card__info">
