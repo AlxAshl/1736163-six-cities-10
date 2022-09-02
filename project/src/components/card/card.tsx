@@ -29,11 +29,12 @@ function Card({offer, onCardItemHover, isMainPage}: CardProps): JSX.Element {
     }, 700));
   };
 
+
   const handleCardItemMouseLeave = () => {
     clearTimeout(delayHandler);
   };
 
-  const bookmarkClickHandler = (event:MouseEvent<HTMLButtonElement>) => {
+  const handleBookmarkClick = (event:MouseEvent<HTMLButtonElement>) => {
     if(authorizationStatus === AuthorizationStatus.Auth){
       setIsActive((current) => !current);
       let status = 0;
@@ -71,7 +72,7 @@ function Card({offer, onCardItemHover, isMainPage}: CardProps): JSX.Element {
           <button className={isActive && authorizationStatus === AuthorizationStatus.Auth
             ? 'place-card__bookmark-button--active button'
             : 'place-card__bookmark-button button'} type="button"
-          onClick= {bookmarkClickHandler}
+          onClick= {handleBookmarkClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
