@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { Offer } from '../../types/offer';
 import NavBar from '../../components/nav-bar/nav-bar';
 import Preloader from '../../components/preloader/preloader';
-import { getComments, getFavorites, getHotel, getLoadedHotelStatus, getLoadedNearbyStatus, getNearby, getOffers } from '../../store/data-process/selectors';
+import { getComments, getHotel, getLoadedHotelStatus, getLoadedNearbyStatus, getNearby, getOffers } from '../../store/data-process/selectors';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { hotelId } from '../../store/utility-process/utility-process';
 import { MouseEvent } from 'react';

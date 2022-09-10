@@ -14,7 +14,7 @@ import {fetchFavoriteAction, fetchOfferAction} from '../../store/api-actions';
 import { Offer } from '../../types/offer';
 import { redirectToRoute } from '../../store/action';
 import MainEmpty from '../../components/main-empty/main-empty';
-import { getFavorites, getLoadedDataStatus, getLoadedFavoritesStatus, getOffers } from '../../store/data-process/selectors';
+import { getLoadedDataStatus, getLoadedFavoritesStatus, getOffers } from '../../store/data-process/selectors';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 

@@ -1,9 +1,9 @@
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getUser } from '../../services/user-data';
-import { fetchFavoriteAction, logoutAction } from '../../store/api-actions';
+import { logoutAction } from '../../store/api-actions';
 import { getFavorites, getLoadedFavoritesStatus } from '../../store/data-process/selectors';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 // import { Offer } from '../../types/offer';
@@ -17,16 +17,15 @@ function NavBar(/*{favorites}: NavBarTypes*/): JSX.Element {
   // useEffect(()=>{
   //   const favorites = useAppDispatch(fetchFavoriteAction);
   // })
-  console.log('nav-bar.tsx');
   const isFavoritesLoaded = useAppSelector(getLoadedFavoritesStatus);
   const favorites = useAppSelector(getFavorites);
-  console.log(favorites)
   const userName = getUser();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
   const handleLogoutClick = () => {
     dispatch(logoutAction());
   };
+
   // при каждом нажатии на закладку происходит двойной вызов getFavorites
   // при обновлении статуса, дождаться 200, потом уже обновлять
 

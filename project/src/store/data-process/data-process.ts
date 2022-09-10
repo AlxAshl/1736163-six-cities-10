@@ -4,7 +4,7 @@ import browserHistory from '../../browser-history';
 import {NameSpace} from '../../const';
 import { Offer } from '../../types/offer';
 import {DataProcess} from '../../types/state';
-import {fetchCommentAction, fetchFavoriteAction, fetchHotelAction, fetchNearbytAction, fetchOfferAction, postCommentAction, setFavoriteAction} from '../api-actions';
+import {fetchCommentAction, fetchFavoriteAction, fetchHotelAction, fetchNearbytAction, fetchOfferAction, postCommentAction} from '../api-actions';
 
 
 const initialState: DataProcess = {
