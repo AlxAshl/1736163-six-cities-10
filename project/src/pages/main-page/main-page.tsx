@@ -27,7 +27,7 @@ function MainPage(): JSX.Element {
   const isFavoritesLoaded = useAppSelector(getLoadedFavoritesStatus);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const serverOffers = useAppSelector(getOffers);
-  const favorites = useAppSelector(getFavorites);
+  // const favorites = useAppSelector(getFavorites);
   const cityOffers = serverOffers.filter((offerObj) => offerObj.city.name === city);
   const dispatch = useAppDispatch();
   const [selectedCard, setSelectedCard] = useState<Offer | undefined>(undefined);
@@ -55,6 +55,7 @@ function MainPage(): JSX.Element {
         dispatch(redirectToRoute(AppRoute.Notfound));
       }
     }
+    store.dispatch(fetchOfferAction);
   });
 
   return (
@@ -70,7 +71,7 @@ function MainPage(): JSX.Element {
               <div className="header__left">
                 <Logo />
               </div>
-              <NavBar favorites={favorites}/>
+              <NavBar /*favorites={favorites}*//>
             </div>
           </div>
         </header>

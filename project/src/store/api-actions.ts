@@ -79,7 +79,10 @@ export const setFavoriteAction = createAsyncThunk<void, number[], {
 }>(
   'data/setFavourites',
   async ([status,id], {extra: api}) => {
-    await api.post<number>(`${APIRoute.Favorite}/${id}/${status}`);
+    const response = await api.post<number>(`${APIRoute.Favorite}/${id}/${status}`);
+    if(response){
+      console.log('ответ с сервера : ', response.status);
+    }
   }
 );
 

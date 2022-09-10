@@ -8,7 +8,7 @@ import {fetchCommentAction, fetchFavoriteAction, fetchHotelAction, fetchNearbytA
 
 
 const initialState: DataProcess = {
-  isFavouritesSet: false,
+  // isFavouritesSet: false,
   isDataLoaded:false,
   isHotelLoaded: false,
   isNearbyLoaded: false,
@@ -72,12 +72,12 @@ export const dataProcess = createSlice({
       .addCase(fetchFavoriteAction.pending, (state) => {
         state.isFavoritesLoaded = true;
       })
-      .addCase(setFavoriteAction.fulfilled, (state) => {
-        state.isFavouritesSet = false;
-      })
-      .addCase(setFavoriteAction.pending, (state) => {
-        state.isFavouritesSet = true;
-      })
+      // .addCase(setFavoriteAction.fulfilled, (state) => {
+      //   state.isFavouritesSet = false;
+      // })
+      // .addCase(setFavoriteAction.pending, (state) => {
+      //   state.isFavouritesSet = true;
+      // })
       .addCase(postCommentAction.fulfilled, (state) => {
         state.isPostLoaded = false;
       })

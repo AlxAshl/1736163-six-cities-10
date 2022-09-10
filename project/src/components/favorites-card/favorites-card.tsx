@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { AuthorizationStatus } from '../../const';
 import { fetchFavoriteAction, setFavoriteAction } from '../../store/api-actions';
+import { toast } from 'react-toastify';
 
 
 type CardProps = {
@@ -23,8 +24,10 @@ function FavoriteCard({offer, remove}: CardProps): JSX.Element {
       setIsActive((current) => !current);
       const status = 0;
       remove(offer.id);
-      dispatch(setFavoriteAction([status, id]));
-      dispatch(fetchFavoriteAction());
+      (dispatch(setFavoriteAction([status, id]))).then (
+        (response) => dispatch(fetchFavoriteAction()),
+        (error) => toast.error('sorry')
+      );
     }
   };
 

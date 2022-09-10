@@ -1,29 +1,34 @@
 import Logo from '../../components/logo/logo';
 import {Link} from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import { getFavorites, getLoadedFavoritesStatus } from '../../store/data-process/selectors';
+import { getFavorites } from '../../store/data-process/selectors';
 import NavBar from '../../components/nav-bar/nav-bar';
-import Preloader from '../../components/preloader/preloader';
 import FavoritesList from '../../components/favorites-list/favorites-list';
 import { fetchFavoriteAction } from '../../store/api-actions';
 import { store } from '../../store';
 import FavoritesEmpty from '../../components/favorites-empty/favorites-empty';
 import PageFooter from '../../components/page-footer/page-footer';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { AuthorizationStatus } from '../../const';
+import { useEffect } from 'react';
 
-
-store.dispatch(fetchFavoriteAction());
 
 function Favorites(): JSX.Element {
 
-  const isFavoritesLoaded = useAppSelector(getLoadedFavoritesStatus);
   const favorites = useAppSelector(getFavorites);
-
   const cityList:string[] = [];
+
   favorites.forEach((favoriteCard) => {
     if(!cityList.includes(favoriteCard.city.name)){
       cityList.push(favoriteCard.city.name);
     }
   });
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  useEffect(()=>{
+    if(authorizationStatus === AuthorizationStatus.Auth){
+      store.dispatch(fetchFavoriteAction());
+    }
+  },[authorizationStatus]);
 
   return (
     <>
@@ -37,41 +42,38 @@ function Favorites(): JSX.Element {
               <div className="header__left">
                 <Logo />
               </div>
-              <NavBar favorites={favorites}/>
+              <NavBar />
             </div>
           </div>
         </header>
         <main className="page__main page__main--favorites">
-          {!isFavoritesLoaded
-            ?
-            <div className="page__favorites-container container">
-              {cityList.length !== 0
-                ?
-                <section className="favorites">
-                  <h1 className="favorites__title">Saved listing</h1>
-                  <ul className="favorites__list">
-                    {cityList.map((cityOption, index) => {
-                      const keyValue = `${index}-${cityOption}`;
-                      return (
-                        <li className="favorites__locations-items" key = {keyValue}>
-                          <div className="favorites__locations locations locations--current">
-                            <div className="locations__item">
-                              <Link to={`/${cityOption}`} className="locations__item-link" >
-                                <span>{cityOption}</span>
-                              </Link>
-                            </div>
+          <div className="page__favorites-container container">
+            {cityList.length !== 0
+              ?
+              <section className="favorites">
+                <h1 className="favorites__title">Saved listing</h1>
+                <ul className="favorites__list">
+                  {cityList.map((cityOption, index) => {
+                    const keyValue = `${index}-${cityOption}`;
+                    return (
+                      <li className="favorites__locations-items" key = {keyValue}>
+                        <div className="favorites__locations locations locations--current">
+                          <div className="locations__item">
+                            <Link to={`/${cityOption}`} className="locations__item-link" >
+                              <span>{cityOption}</span>
+                            </Link>
                           </div>
-                          <div className="favorites__places">
-                            <FavoritesList cityOption={cityOption} favorites={favorites}/>
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </section>
-                : <FavoritesEmpty />}
-            </div>
-            : <Preloader />}
+                        </div>
+                        <div className="favorites__places">
+                          <FavoritesList cityOption={cityOption} favorites={favorites}/>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+              : <FavoritesEmpty />}
+          </div>
         </main>
         <PageFooter />
       </div>

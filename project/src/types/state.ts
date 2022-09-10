@@ -10,7 +10,7 @@ export type UserProcess = {
 };
 
 export type DataProcess = {
-  isFavouritesSet: boolean, // возможно потребуется когда нужно будет обновить статус(количество)
+  // isFavouritesSet: boolean, // возможно потребуется когда нужно будет обновить статус(количество)
   isDataLoaded: boolean,
   isHotelLoaded: boolean,
   isNearbyLoaded: boolean,

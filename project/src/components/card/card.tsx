@@ -41,8 +41,12 @@ function Card({offer, onCardItemHover, isMainPage}: CardProps): JSX.Element {
       if(!isActive){
         status = 1;
       }
-      dispatch(setFavoriteAction([status, id]));
-      dispatch(fetchFavoriteAction());
+      (dispatch(setFavoriteAction([status, id]))).then (
+        (response) => dispatch(fetchFavoriteAction()),
+        (error) => toast.error('sorry')
+      );
+      // console.log(response, error);
+      //дождаться ответа с сервера
       status === 1
         ? toast.success('Added to favorites!')
         : toast.success('Removed from favorites!');

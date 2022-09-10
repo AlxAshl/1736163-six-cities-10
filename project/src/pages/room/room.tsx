@@ -39,7 +39,6 @@ function Room(): JSX.Element {
     dispatch(fetchHotelAction());
   }, [id, dispatch]);
 
-  const favorites = useAppSelector(getFavorites);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const serverOffers = useAppSelector(getOffers);
   const hotel = useAppSelector(getHotel);
@@ -67,8 +66,10 @@ function Room(): JSX.Element {
       if(!isActive){
         status = 1;
       }
-      dispatch(setFavoriteAction([status, Number(id)]));
-      dispatch(fetchFavoriteAction());
+      (dispatch(setFavoriteAction([status, Number(id)]))).then (
+        (response) => dispatch(fetchFavoriteAction()),
+        (error) => toast.error('Sorry, some connection error has occured, try to reload page.')
+      );
       status === 1
         ? toast.success('Added to favorites!')
         : toast.success('Removed from favorites!');
@@ -95,7 +96,7 @@ function Room(): JSX.Element {
                 <div className="header__left">
                   <Logo />
                 </div>
-                <NavBar favorites={favorites}/>
+                <NavBar /*favorites={favorites}*//>
               </div>
             </div>
           </header>
