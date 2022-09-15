@@ -26,7 +26,7 @@ export const dataProcess = createSlice({
   name: NameSpace.Data,
   initialState,
   reducers: {
-    loadOffers: (state, action) => {
+    loadOffers (state, action) {// убрал стрелку и семиколон
       state.serverOffers = action.payload;
     },
   },
@@ -35,8 +35,8 @@ export const dataProcess = createSlice({
       .addCase(fetchOfferAction.pending, (state) => {
         state.isDataLoaded = true;
       })
-      .addCase(fetchOfferAction.fulfilled, (state, action) => {
-        state.serverOffers = action.payload;
+      .addCase(fetchOfferAction.fulfilled, (state, action) => {//fetchOfferAction не является напрямую action creator'ом, это просто функция, но результат работы этой функции
+        state.serverOffers = action.payload; //может быть перехвачен редьюсером и отправлен в стор
         state.unsortedOffers = action.payload;
         state.isDataLoaded = false;
       })
@@ -72,12 +72,6 @@ export const dataProcess = createSlice({
       .addCase(fetchFavoriteAction.pending, (state) => {
         state.isFavoritesLoaded = true;
       })
-      // .addCase(setFavoriteAction.fulfilled, (state) => {
-      //   state.isFavouritesSet = false;
-      // })
-      // .addCase(setFavoriteAction.pending, (state) => {
-      //   state.isFavouritesSet = true;
-      // })
       .addCase(postCommentAction.fulfilled, (state) => {
         state.isPostLoaded = false;
       })

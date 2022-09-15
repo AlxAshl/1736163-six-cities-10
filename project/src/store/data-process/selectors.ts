@@ -4,7 +4,7 @@ import {Offer} from '../../types/offer';
 import { Review } from '../../types/review';
 
 
-export const getOffers = (state: State): Offer[] => state[NameSpace.Data].serverOffers;
+export const getOffers = (state: State): Offer[] => state[NameSpace.Data].serverOffers;// в скобках просто название слайса, которое дается в  createSlice({name: '...'})
 export const getUnsortOffers = (state: State): Offer[] => state[NameSpace.Data].unsortedOffers;
 export const getComments = (state: State): Review[] => state[NameSpace.Data].comments;
 export const getNearby = (state: State): Offer[] => state[NameSpace.Data].nearby;
